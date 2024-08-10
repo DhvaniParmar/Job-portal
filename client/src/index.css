@@ -27,11 +27,11 @@ body{
 ::-webkit-scrollbar {
     width: 5px;
     height: 3px;
-    background-color: rgba(128, 128, 128, 0.221);
+    background-color: rgba(15, 11, 11, 0.248);
     
 }
 ::-webkit-scrollbar-thumb {
-    background-color: #07285684;
+    background-color: #07285633;
     border-radius: 10px;
     cursor: grab;
 }

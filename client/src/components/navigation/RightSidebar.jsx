@@ -8,8 +8,9 @@ import { useSelector } from "react-redux";
 
 const RightSidebar = () => {
   const theme = useSelector((state) => state.theme.value);
+
   return (
-    <div className="flex flex-col h-full max-lg:hidden px-8 py-8 justify-start gap-8">
+    <div className="flex flex-col h-fit max-lg:hidden max-xl:pr-4 max-xl:border-none px-8 py-8 justify-between gap-8 border-l fixed right-0 top-16 ">
       <div className="suggested-jobs flex flex-col items-start min-h-1/2">
         <p className="text-xl mb-4 flex items-center gap-2">
           Suggested Jobs <PiSuitcaseSimpleThin />
@@ -28,8 +29,10 @@ const RightSidebar = () => {
                   >
                     <img
                       src={job.logo}
-                      alt="logo"
-                      className="w-12 h-12 object-contain"
+                      priority
+                      fetchPriority="high"
+                      alt='logo'
+                      className="w-12 h-12 object-contain flex items-center justify-center"
                     />
                   </Link>
                   <div className="flex flex-col">

@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 const UserAvatar = () => {
   const theme = useSelector((state) => state.theme.value);
   return (
-    <Popover>
+    <Popover sideOffset={5}>
       <PopoverTrigger>
         <Avatar>
           <AvatarImage src="https://github.com/shadcn.png" />

@@ -6,7 +6,7 @@ import { useInView } from "react-intersection-observer";
 
 const JobCard = ({ job }) => {
   const theme = useSelector((state) => state.theme.value);
-  const [ ref, inView ] = useInView();
+  const [ref, inView] = useInView();
 
   return (
     <motion.div ref={ref} className="flex items-center justify-center">
@@ -19,7 +19,7 @@ const JobCard = ({ job }) => {
         }}
         className="flex flex-col items-start shadow-[0_0_25px_gray] shadow-gray-500/40 backdrop-blur-md rounded-md p-4 h-fit"
       >
-        <p className="text-xl font-semibold ">{job.title}</p>
+        <p className="text-xl font-bold ">{job.title}</p>
         <Link
           to={`/companies/${job.company}`}
           className="company relative flex items-center cursor-pointer py-1 my-1 pr-4 w-fit"
@@ -35,18 +35,16 @@ const JobCard = ({ job }) => {
         </Link>
         <p className="">{job.location}</p>
         <p>Salary - {job.salary}</p>
-        <p>
+        <Link
+          to={`/jobs/${job._id}`}
+          className={`group hover-effect text-xs py-1 ${
+            theme === "dark" && "hover-effect-dark"
+          }`}
+        >
           {job.description.slice(0, 100)}
-          <Link
-            to={`/jobs/${job._id}`}
-            className={`hover:text-blue-900/70 hover-effect text-xs ${
-              theme === "dark" && "hover-effect-dark"
-            }`}
-          >
-            {" "}
-            ...see more
-          </Link>
-        </p>
+
+          <span className="group-hover:text-blue-900/70"> ...see more</span>
+        </Link>
       </div>
     </motion.div>
   );
