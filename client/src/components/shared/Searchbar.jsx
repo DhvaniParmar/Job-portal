@@ -37,7 +37,6 @@ const Searchbar = () => {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.geonames[0].name);
         const cities = data.geonames.map(
           (city) => `${city.name},${city?.countryCode}`
         );
@@ -52,7 +51,7 @@ const Searchbar = () => {
         theme === "dark" && "bg-slate-900/90"
       }`}
     >
-      <div className="flex flex-col">
+      <div className="flex flex-col ">
         <input
           type="text"
           placeholder="Search for jobs"
@@ -78,7 +77,7 @@ const Searchbar = () => {
             })}
         </div>
       </div>
-      <div className="flex items-start max-lg:gap-12 justify-start gap-4 z-[12]">
+      <div className="flex items-start max-lg:gap-12 justify-between flex-1 max-lg:w-full gap-4 z-[12]">
         <div className="flex flex-col ">
           <input
             type="text"

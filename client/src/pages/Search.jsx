@@ -5,11 +5,15 @@ import React, { Suspense } from "react";
 import { useSearchParams } from "react-router-dom";
 
 const Search = () => {
+  
   const [searchParams] = useSearchParams();
-  const jobTitle = searchParams.get("jobTitle");
-  const location = searchParams.get("location");
+  const jobTitle = searchParams.get("jobTitle")
+  const location = searchParams.get("location")
 
-  const results = (jobTitle && location ) ? `Showing results for ${jobTitle} in ${location}` : null;
+  const results =
+    jobTitle && location
+      ? `Showing results for ${jobTitle} in ${location}`
+      : null;
 
   return (
     <motion.div
@@ -19,11 +23,11 @@ const Search = () => {
       transition={{ ease: "linear", duration: 0.3 }}
       className="w-full pt-6 flex flex-col items-left gap-4 max-sm:px-4"
     >
-      <div className="max-lg:w-full w-2/3 pt-2">
+      <div className="text-2xl font-bold">Your Search Results.</div>
+
+      <div className="max-lg:w-full w-3/4 pt-2">
         <Searchbar />
       </div>
-
-      <div className="text-2xl font-bold">Your Search Results.</div>
 
       <div className="resultContainer relative w-full rounded-md min-h-[30vh] grid items-center grid-cols-1 md:grid-cols-2">
         <Suspense
@@ -36,16 +40,19 @@ const Search = () => {
           <>
             {" "}
             {results ? (
-              <>{results.map((job,index)=>{
-                return <JobCard key={index} job={job} />;
-              })}</>
+              <>
+                {/* {results.map((job, index) => {
+                  return <JobCard key={index} job={job} />;
+                })} */}
+                {results}
+              </>
             ) : (
-              <div className="">No results found.</div>
+              <div className="absolute top-0 left-0 ml-2">Enter Something to search.</div>
             )}
           </>
         </Suspense>
       </div>
-      {results && <Pagination /> }
+      {results && <Pagination />}
     </motion.div>
   );
 };

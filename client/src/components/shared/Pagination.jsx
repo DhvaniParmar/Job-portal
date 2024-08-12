@@ -1,15 +1,19 @@
 import React from "react";
-import { useLocation, useSearchParams, redirect, useNavigate } from "react-router-dom";
+import { useLocation, useSearchParams, useNavigate } from "react-router-dom";
+import Query from 'query-string'
 
 const Pagination = ({ totalPages = 10 }) => {
   const location = useLocation();
+  const query = Query.parse(location.search);
+
   const [searchParams] = useSearchParams();
-  const page = parseInt(searchParams.get("page")) || 1;
+  const page = parseInt(searchParams.get("page")) || 1; 
   const navigate = useNavigate()
 
   const handleNavigation = (direction) => {
     const newPage = direction === "prev" ? page - 1 : page + 1;
-    navigate(`${location.pathname}?page=${newPage}`);
+    query.page = newPage;
+    navigate({ path : `${location.pathname}`, search : Query.stringify(query)});
   }
 
   return (

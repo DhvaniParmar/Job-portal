@@ -60,7 +60,7 @@ userSchema.pre("save", async function(next) {
         {
             next();
         }
-        this.password = await bcrypt.hash(this.password, 10);
+        this.password = bcrypt.hash(this.password, 10);
 });
  
 // now after encryption user wants that thier password will show as it is as he or she was written. so for it we have to create the function which compare the enteredPassowrd and the decrypted password.

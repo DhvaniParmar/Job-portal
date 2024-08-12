@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import Navbar from "../components/shared/Navbar";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import LeftSidebar from "../components/navigation/LeftSidebar";
 import RightSidebar from "../components/navigation/RightSidebar";
 import UserAvatar from "@/components/shared/UserAvatar";
@@ -16,9 +16,14 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { links } from "@/utils";
-import Footer from "@/components/shared/Footer";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const user = localStorage.getItem("user");
+  useEffect(() => {
+    if (user) navigate("/auth?redirect=true");
+    else if (user?.isVerified) navigate("/auth/onboarding");
+  }, []);
   const theme = useSelector((state) => state.theme.value);
   return (
     <div
@@ -44,11 +49,16 @@ const Dashboard = () => {
             </SheetTitle>
             <SheetDescription className="text-inherit flex flex-col py-12 items-center gap-4">
               {links.map((link, index) => {
-                const location = useLocation()
-                const isActive = location.pathname === link.url
+                const location = useLocation();
+                const isActive = location.pathname === link.url;
                 return (
                   <SheetClose key={index} asChild>
-                    <Link to={link.url} className={` text-lg w-2/3 ${isActive && 'border-b border-slate-900 font-bold'}`}>
+                    <Link
+                      to={link.url}
+                      className={` text-lg w-2/3 ${
+                        isActive && "border-b border-slate-900 font-bold"
+                      }`}
+                    >
                       {link.name}
                     </Link>
                   </SheetClose>
@@ -66,9 +76,13 @@ const Dashboard = () => {
         ></div>
         <UserAvatar />
       </Navbar>
-      <div className={`flex justify-center max-sm:justify-center max-lg:justify-end relative top-12`}>
+      <div
+        className={`flex justify-center max-sm:justify-center max-lg:justify-end relative top-12`}
+      >
         <LeftSidebar />
-        <div className={`max-w-[65vw] max-lg:min-w-[75vw] max-xl:max-w-[55vw] max-sm:min-w-[100vw] md:-ml-[8vw] relative`}>
+        <div
+          className={`w-[65vw] max-lg:min-w-[75vw] max-lg:pr-4 max-xl:min-w-[55vw] max-sm:min-w-[100vw] md:-ml-[8vw] relative`}
+        >
           <Outlet />
         </div>
         <RightSidebar />

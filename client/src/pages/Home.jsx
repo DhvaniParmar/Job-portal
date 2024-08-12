@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MarqueeItem from "../components/cards/MarqueeItem";
 import Hero from "../components/Hero";
 import { lowerMarquee, upperMarquee } from "../utils";
@@ -14,6 +14,13 @@ const Footer = lazy(() => import("../components/shared/Footer"));
 
 const Home = () => {
   const theme = useSelector((state) => state.theme.value);
+  const navigate = useNavigate()
+
+  const user = localStorage.getItem("user");
+  React.useEffect(()=>{
+    if(user) navigate('/dashboard')
+  },[])
+
   return (
     <div
       className={`min-h-[100dvh] w-full relative font-gupter overflow-x-hidden ${
