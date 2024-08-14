@@ -4,6 +4,9 @@ import { User } from "../models/userSchema.js";
 import { v2 as cloudinary } from "cloudinary";
 import { sendToken } from "../utils/jwtToken.js";
 
+
+//creating the Registeration part for the register routes.
+
 export const register = catchAsyncErrors(async (req, res, next) => {
   try {
     const {
@@ -181,3 +184,26 @@ export const updateProfile = catchAsyncErrors(async (req, res, next) => {
     message: "Profile updated.",
   });
 }); 
+
+
+//updating the password - user profile
+// If existing password matches of the user - comparePassword method
+
+export const updatePassword = catchAsyncErrors(async (req, res, next) => {
+  const user = await user.findById(req.user.id).select("+password");
+
+  const isPasswordMatched = await user.comparePassword(req.body.oldPassword);
+
+  // old password is incorrect - i.e  bad request is made by user
+  if (!isPasswordMatched) {
+    return next(new ErrorHandler("Old password is Incorrect.", 400));
+  }
+
+  if (req.body.newPassword !== req.body.confirmPassword) {
+    return next(new ErrorHandler("New password & confirm password do not match.", 400));
+  }
+
+  user.password = req.body.newPassword;
+  await user.save();
+  sendToken(user, 200, res, "Password updated successfully.")
+})
