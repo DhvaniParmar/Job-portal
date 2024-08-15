@@ -27,11 +27,11 @@ body{
 ::-webkit-scrollbar {
     width: 5px;
     height: 3px;
-    background-color: rgba(128, 128, 128, 0.221);
+    background-color: rgba(15, 11, 11, 0.248);
     
 }
 ::-webkit-scrollbar-thumb {
-    background-color: #07285684;
+    background-color: #07285633;
     border-radius: 10px;
     cursor: grab;
 }
@@ -55,6 +55,11 @@ body{
 /* Hero Card Styles */
 .hero-card{
     @apply absolute h-[65%] backdrop-blur-lg bg-gradient-to-b max-lg:h-[90%] w-1/2 rounded-xl origin-bottom shadow-[0_0_15px_gray] flex items-center justify-center overflow-hidden;
+}
+
+/* Flip Effect */
+.flip{
+    transform : rotateY(180deg)
 }
 
 /* creating the hover effect on landing page */

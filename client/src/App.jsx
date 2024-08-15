@@ -15,11 +15,18 @@ import Profile from "./pages/Profile";
 import CompanyDetails from "./pages/CompanyDetails";
 import HomeComponent from "./components/dashboard/HomeComponent";
 import Me from "./components/dashboard/Me";
+import LoadingBar from "react-top-loading-bar";
+import { useDispatch, useSelector } from "react-redux";
+import { setProgress } from "./redux/progress/progressSlice";
 
 const App = () => {
+  const progress = useSelector((state) => state.progress.value);
+  const dispatch = useDispatch();
+
   const locomotiveScroll = new LocomotiveScroll()
   return (
     <BrowserRouter>
+    <LoadingBar color='gray' progress={progress} onLoaderFinished={()=> dispatch(setProgress(0))}/>
       <Routes>
       
         {/* Dashboard */}
@@ -42,6 +49,8 @@ const App = () => {
         {/* Job Routes */}
         <Route path='/jobs/:id' element={<JobDetails />} />
         <Route path='/companies/:company' element={<CompanyDetails />} />
+
+        
 
         {/* Not Found */}
         <Route path="*" element={<div>Not Found</div>} />

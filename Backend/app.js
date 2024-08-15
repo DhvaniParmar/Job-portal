@@ -40,6 +40,10 @@ app.use("/api/v1/job", jobRouter); //here we are calling the jobRoutes.
 
 app.use("/api/v1/application", applicationRouter);
 
+app.get('/', (req, res) => {
+  res.send('API is running....');
+})
+
 newsLetterCron();
 connection(); //here calling to the database and try to connect with database - mongoose.
 

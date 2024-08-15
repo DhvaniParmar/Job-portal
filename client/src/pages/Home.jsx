@@ -1,10 +1,11 @@
 import React, { Suspense } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MarqueeItem from "../components/cards/MarqueeItem";
 import Hero from "../components/Hero";
 import { lowerMarquee, upperMarquee } from "../utils";
 import { lazy } from "react";
+import { PacmanLoader } from "react-spinners";
 
 const Navbar = lazy(() => import("../components/shared/Navbar"));
 const TrendingJobs = lazy(() => import("../components/TrendingJobs"));
@@ -14,6 +15,13 @@ const Footer = lazy(() => import("../components/shared/Footer"));
 
 const Home = () => {
   const theme = useSelector((state) => state.theme.value);
+  const navigate = useNavigate()
+
+  const user = localStorage.getItem("user");
+  React.useEffect(()=>{
+    if(user) navigate('/dashboard')
+  },[])
+
   return (
     <div
       className={`min-h-[100dvh] w-full relative font-gupter overflow-x-hidden ${
@@ -46,7 +54,7 @@ const Home = () => {
                 : "bg-gradient-to-r from-transparent to-zinc-900/30"
             } absolute inset-0 flex items-center justify-center h-screen w-screen text-5xl font-bold drop-shadow-{0_0_20px_black]`}
           >
-            Loading...
+            <PacmanLoader size={48} color={`${theme === 'dark' ? 'gray' : '#000'}`}/>
           </div>
         }
       >
