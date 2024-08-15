@@ -17,16 +17,12 @@ Welcome to the **JOB PORTAL** project! This repository contains the source code 
 - **Frontend:**
   - **React.js** for building the user interface
   - **Tailwind CSS** for styling
-  - **Axios** for API requests
+  - **Fetch** for API requests
 
 - **Backend:**
   - **Node.js & Express.js** for server-side logic
   - **MongoDB** for database management
   - **JWT** for secure authentication
-
-- **Deployment:**
-  - **Docker** for containerization
-  - **Heroku** for live deployment
     
 
 ## **🛠️ Installation & Setup**
@@ -59,7 +55,7 @@ To get started with the project, follow these steps:
   1. Nikhil
   2. Uzair 
   3. Tharun
-  4. Dhavni
+  4. Dhvani
 
 
 
