@@ -16,14 +16,18 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { links } from "@/utils";
+import { jwtDecode } from "jwt-decode";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const user = localStorage.getItem("user");
+  const token = localStorage.getItem("token") || null;
+  let user = null
+  if(token) user = jwtDecode(token);
+
   useEffect(() => {
-    if (user) navigate("/auth?redirect=true");
-    else if (user?.isVerified) navigate("/auth/onboarding");
+    if (!token) navigate("/auth?redirect=true");
   }, []);
+  
   const theme = useSelector((state) => state.theme.value);
   return (
     <div

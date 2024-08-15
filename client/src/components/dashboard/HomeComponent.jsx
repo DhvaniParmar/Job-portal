@@ -4,10 +4,14 @@ import React from "react";
 import JobCard from "../cards/JobCard";
 import Pagination from "../shared/Pagination";
 import { useSearchParams } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const HomeComponent = () => {
   const [searchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page")) || 1;
+  const token = localStorage.getItem("token");
+  if(!token) return null;
+  const user = jwtDecode(token)
   return (
     <motion.div
       initial={{ y: "20px" }}
@@ -17,7 +21,7 @@ const HomeComponent = () => {
     >
       <div className="flex flex-col justify-start">
         <div className="intro pb-4 px-2">
-          <h1 className="text-xl font-bold">Welcome User</h1>
+          <h1 className="text-xl font-bold">Welcome {user.name.split(' ')[0]}</h1>
           <p className="font-light text-sm md:w-3/4">
             Explore endless opportunities through our immersive job search and
             connect to like minded individuals. Check out the latest job

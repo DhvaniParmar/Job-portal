@@ -5,6 +5,7 @@ import MarqueeItem from "../components/cards/MarqueeItem";
 import Hero from "../components/Hero";
 import { lowerMarquee, upperMarquee } from "../utils";
 import { lazy } from "react";
+import { PacmanLoader } from "react-spinners";
 
 const Navbar = lazy(() => import("../components/shared/Navbar"));
 const TrendingJobs = lazy(() => import("../components/TrendingJobs"));
@@ -53,7 +54,7 @@ const Home = () => {
                 : "bg-gradient-to-r from-transparent to-zinc-900/30"
             } absolute inset-0 flex items-center justify-center h-screen w-screen text-5xl font-bold drop-shadow-{0_0_20px_black]`}
           >
-            Loading...
+            <PacmanLoader size={48} color={`${theme === 'dark' ? 'gray' : '#000'}`}/>
           </div>
         }
       >

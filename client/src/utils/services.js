@@ -16,4 +16,9 @@ const removeHover =() =>{
     gif.style.scale = 0
 }
 
-export { animateHover, removeHover }
+const getInitials = (name) => {
+    let initials = name.split(' ').map((n)=>n[0]).join('')
+    return initials
+}
+
+export { animateHover, removeHover, getInitials }

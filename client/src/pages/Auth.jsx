@@ -1,25 +1,26 @@
 import React, { useEffect } from "react";
-import { Link, Outlet, useLocation, useSearchParams } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Navbar from "../components/shared/Navbar";
 
-const About = () => {
+const Auth = () => {
   const location = useLocation();
   const theme = useSelector((state) => state.theme.value);
+  const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get("redirect");
 
-  const user = localStorage.getItem("user");
+  const token = localStorage.getItem("token") || null;
+  
   useEffect(() => {
-    if (user && user.isVerified) navigate("/dashboard");
-    else if (user && !user.isVerified) navigate("/auth/onboarding");
+    if (token) navigate("/dashboard");
   }, []);
 
   return (
     <div
       className={` ${
-        theme === "dark" && "bg-zinc-900 text-white"
+        theme === "dark" ? "bg-zinc-900 text-white" : 'bg-gradient-to-r from-transparent to-zinc-900/30'
       } w-screen min-h-[100dvh] font-gupter flex flex-col`}
     >
       <Navbar otherClasses={"relative"}>
@@ -51,4 +52,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default Auth;
