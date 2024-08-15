@@ -27,8 +27,9 @@ const Dashboard = () => {
   useEffect(() => {
     if (!token) navigate("/auth?redirect=true");
   }, []);
-  
+
   const theme = useSelector((state) => state.theme.value);
+  
   return (
     <div
       className={` ${

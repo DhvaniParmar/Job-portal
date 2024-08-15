@@ -50,6 +50,8 @@ const App = () => {
         <Route path='/jobs/:id' element={<JobDetails />} />
         <Route path='/companies/:company' element={<CompanyDetails />} />
 
+        
+
         {/* Not Found */}
         <Route path="*" element={<div>Not Found</div>} />
 

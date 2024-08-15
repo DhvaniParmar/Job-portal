@@ -40,9 +40,10 @@ const upperMarquee = [
   ];
 
   const carouselImages = [
-    'page1-images/01.png',
-    'page1-images/02.png',
-    'page1-images/03.png',
+    'page1-images/svg-1.svg',
+    'page1-images/svg-2.svg',
+    'page1-images/svg-3.svg',
+    'page1-images/svg-4.svg',
   ]
 
   const jobTitles = [

@@ -65,7 +65,6 @@ const LoginForm = () => {
           ...values,
           role: role.charAt(0).toUpperCase() + role.slice(1),
         }),
-        credentials: "same-origin",
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -12,6 +12,8 @@ export const sendToken = (user, statusCode, res, message) => {
       Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
+    sameSite: "none",
+    secure: true
   };
 
   // we have to make it true because when you will not give it true then token will be generate but it will give the many issues as well.

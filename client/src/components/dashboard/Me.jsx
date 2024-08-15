@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import React from "react";
 
 const Me = () => {
+
   return (
     <motion.div
       initial={{ y: "20px" }}
