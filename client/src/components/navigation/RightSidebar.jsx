@@ -32,7 +32,6 @@ const RightSidebar = () => {
                     >
                       <img
                         src={job.logo}
-                        priority="true"
                         alt="logo"
                         className="w-12 h-12 object-contain flex items-center justify-center"
                       />

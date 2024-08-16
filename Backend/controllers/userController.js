@@ -1,19 +1,19 @@
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 import ErrorHandler from "../middlewares/error.js";
 import { User } from "../models/userSchema.js";
-import jwt from "jsonwebtoken";
 import { v2 as cloudinary } from "cloudinary";
 import { sendToken } from "../utils/jwtToken.js";
 import bcrypt from "bcrypt";
 
 //creating the Registeration part for the register routes.
 
-export const register = catchAsyncErrors(async (req, res, next) => {
+export const register = async (req, res, next) => {
   try {
-    const { name, email, phone, password, role, niches} = req.body;
+    console.log(req.body)
+    const { name, email, phone, password, role, niches } = req.body
+    
 
     if (!name || !email || !phone || !password || !role) {
-      console.log(req.body)
       return next(
         new ErrorHandler("All fields are required, write again. in first" , 400)
       );
@@ -29,9 +29,9 @@ export const register = catchAsyncErrors(async (req, res, next) => {
       name,
       email,
       phone,
-      hashedPassword,
+      password : hashedPassword,
       role,
-      niches,
+      niches : niches.length > 0 ? niches : [],
     };
     if (req.files && req.files?.resume) {
       const { resume } = req.files;
@@ -55,12 +55,37 @@ export const register = catchAsyncErrors(async (req, res, next) => {
         }
       }
     }
-    const user = await User.create(userData);
+
+    if (req.files && req.files?.profilePhoto) {
+      const { profilePhoto } = req.files;
+      if (profilePhoto) {
+        try {
+          const cloudinaryResponse = await cloudinary.uploader.upload(
+            profilePhoto.tempFilePath,
+            { folder: "Job_Seekers_Profile" }
+          );
+          if (!cloudinaryResponse || cloudinaryResponse.error) {
+            return next(
+              new ErrorHandler("Failed to upload profile photo to cloud.", 500)
+            );
+          }
+          userData.profilePhoto = {
+            public_id: cloudinaryResponse.public_id, // we are storing the resume in the userdata list.
+            url: cloudinaryResponse.secure_url,
+          };
+        } catch (error) {
+          return next(new ErrorHandler("Failed to upload profilePhoto", 500));
+        }
+      }
+    }
+    const user = await User.create(userData,{
+      password:0
+    });
     sendToken(user, 201, res, "User Registered.");
   } catch (error) {
     next(error);
   }
-});
+};
 
 //creating the login part for login routes.
 
@@ -169,6 +194,7 @@ export const updateProfile = catchAsyncErrors(async (req, res, next) => {
     message: "Profile updated.",
   });
 });
+
 
 //updating the password - user profile
 // If existing password matches of the user - comparePassword method

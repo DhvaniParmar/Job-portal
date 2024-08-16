@@ -275,4 +275,6 @@ const upperMarquee = [
     },
   ]
 
-  export { upperMarquee, lowerMarquee, tags, carouselImages, jobTitles, jobs, testimonials, links };
+  const baseUrl = "http://localhost:4000/api/v1/";
+
+  export { baseUrl, upperMarquee, lowerMarquee, tags, carouselImages, jobTitles, jobs, testimonials, links };

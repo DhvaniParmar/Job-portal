@@ -1,5 +1,8 @@
 import app from "./app.js";
 import cloudinary from "cloudinary";
+import events from "events";
+
+events.EventEmitter.defaultMaxListeners = 15;
 
 cloudinary.v2.config({            //here we connected the backend with cloudinary to upload the files like resume and coverletter.
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

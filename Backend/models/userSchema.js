@@ -28,11 +28,10 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    minLength: [8, "Password must contain at least 8 characters."],
-    maxLength: [32, "Password cannot exceed 32 characters."],
     Select: false, //from this no one can access the password
   },
   profilePhoto : {
+    public_id : String,
     url : String,
   },
   resume: {

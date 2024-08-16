@@ -21,6 +21,7 @@ export const sendToken = (user, statusCode, res, message) => {
   res.status(statusCode).cookie("token", token, options).json({
     success: true,
     message,
+    user,
     token,
   });
 };

@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import { jwtDecode } from "jwt-decode";
 import React, { Suspense, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { PacmanLoader } from "react-spinners";
 
 const Profile = () => {
@@ -13,27 +13,10 @@ const Profile = () => {
 
   const token = localStorage.getItem("token") || null;
   if (!token) navigate("/auth?redirect=true");
-  const [user, setUser] = React.useState(jwtDecode(token));
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    dispatch(setProgress(30));
-    const fetchUser = async () => {
-      const res = await fetch(`http://localhost:4000/api/v1/user/getuser`, {
-        body: JSON.stringify({ userId: user.id }),
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await res.json();
-      dispatch(setProgress(100));
-      if (data && data.success) {
-        setUser(data.user);
-      } else {
-        console.log(data);
-      }
-    };
-    fetchUser();
+    dispatch(setProgress(300));
   }, []);
 
   return (
@@ -56,9 +39,9 @@ const Profile = () => {
             className="w-full aspect-[16/5] object-cover"
           />
           <div className="details flex items-end gap-4 h-fit ">
-            {user.image ? (
+            {user.profilePhoto ? (
               <img
-                src={user?.image}
+                src={user?.profilePhoto.url}
                 alt={user?.name}
                 className="w-[20%] aspect-square rounded-full overflow-hidden border-2 z-[22] -mt-[10%] h-[120%] shadow-[0_0_20px_gray]"
               />
@@ -71,13 +54,13 @@ const Profile = () => {
             )}
             <div className="flex justify-between items-center flex-1">
               <div className="creds flex flex-col justify-end items- h-full">
-                <p className="font-bold text-xl">{user.name}</p>
-                <p>Id : {user._id}</p>
+                <p className="font-bold text-xl capitalize">{user.name}</p>
+                <p>Id : {user.id}</p>
               </div>
-              {user._id === jwtDecode(localStorage.getItem("token")).id && (
-                <button className="auth-button mx-12 flex items-center gap-2">
+              {user.id === jwtDecode(localStorage.getItem("token")).id && (
+                <Link to='/dashboard/profile/edit' className="auth-button mx-12 flex items-center gap-2">
                   Edit <FaEdit />
-                </button>
+                </Link>
               )}
             </div>
           </div>
