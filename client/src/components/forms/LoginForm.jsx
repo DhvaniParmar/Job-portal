@@ -63,6 +63,7 @@ const LoginForm = () => {
       if (data.success) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("userData", JSON.stringify(data.user));
+        dispatch(updateUser(data.user));
         dispatch(setProgress(100));
         navigate("/dashboard");
       } else {

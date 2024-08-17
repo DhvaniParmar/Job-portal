@@ -9,13 +9,13 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { setProgress } from "@/redux/progress/progressSlice";
-import { baseUrl } from "@/utils";
+import { baseUrl, jobTitles } from "@/utils";
+import { updateUser } from "@/redux/user/userSlice";
 
 const formSchema = z
   .object({
@@ -56,6 +56,8 @@ const formSchema = z
 
 const RegisterForm = () => {
   const [role, setRole] = React.useState("Applicant");
+  const [niches, setNiches] = React.useState([]);
+  const [predictedNiches, setPredictedNiches] = React.useState([]);
   const theme = useSelector((state) => state.theme.value);
   const dispatch = useDispatch();
   const [error, setError] = React.useState(null);
@@ -70,6 +72,17 @@ const RegisterForm = () => {
     }
   }, []);
 
+  //To predict and add niches in the form.
+  const handleSearchChange = (e) => {
+    setPredictedNiches([]);
+    jobTitles.filter((title) => {
+      if (predictedNiches.length > 4) return;
+      if (title.toLowerCase().includes(e.target.value.toLowerCase())) {
+        setPredictedNiches((prev) => [...prev, title]);
+      }
+    });
+  };
+
   //To update the profile photo in form.
   const handleImage = (e) => {
     e.preventDefault();
@@ -81,7 +94,6 @@ const RegisterForm = () => {
 
       fileReader.onload = async (event) => {
         const imageDataUrl = event.target?.result?.toString() || "";
-        // fieldChange(imageDataUrl);
         setProfilePhoto(imageDataUrl);
       };
       fileReader.readAsDataURL(file);
@@ -112,16 +124,24 @@ const RegisterForm = () => {
       formData.append("niches", values.niches);
       formData.append("phone", values.phone);
       formData.append("role", role);
-  
+
+      // append niches
+      if (niches.length > 0) {
+        niches.map((niche) => formData.append("niches", niche));
+      }
+
       // Append the file
-      const resume = document.getElementById("resume").files[0];
-        if (resume && role === "Applicant") {
+      if (role === "Applicant") {
+        const resume = document.getElementById("resume").files[0] || null;
+        if (resume) {
           formData.append("resume", resume);
         }
-        const profilePhoto = document.getElementById("profilePhoto").files[0];
-        if (profilePhoto) {
-          formData.append("profilePhoto", profilePhoto);
-        }  
+      }
+      const profilePhoto =
+        document.getElementById("profilePhoto").files[0] || null;
+      if (profilePhoto) {
+        formData.append("profilePhoto", profilePhoto);
+      }
 
       const res = await fetch(`${baseUrl}user/register`, {
         body: formData,
@@ -132,6 +152,7 @@ const RegisterForm = () => {
       if (data.success) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("userData", JSON.stringify(data.user));
+        dispatch(updateUser(data.user));
         dispatch(setProgress(100));
         navigate("/dashboard");
       } else {
@@ -349,17 +370,19 @@ const RegisterForm = () => {
                 </FormItem>
               )}
             />
-            {role === 'Applicant' && <div className="resume flex flex-col max-sm:w-full">
-              <label htmlFor="resume" className="text-xs">
-                Upload Resume
-              </label>
-              <input
-                type="file"
-                accept=".pdf,.doc,.docx"
-                id="resume"
-                className="text-sm file:bg-transparent file:rounded-md"
-              />
-            </div>}
+            {role === "Applicant" && (
+              <div className="resume flex flex-col max-sm:w-full">
+                <label htmlFor="resume" className="text-xs">
+                  Upload Resume
+                </label>
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  id="resume"
+                  className="text-sm file:bg-transparent file:rounded-md"
+                />
+              </div>
+            )}
           </div>
 
           <div className="flex w-full items-center justify-start">
@@ -419,9 +442,58 @@ const RegisterForm = () => {
             </div>
           </div>
 
-          {role === "Applicant" && <div className="applicant-only flex flex-col">
-            Niches
-            </div>}
+          {role === "Applicant" && (
+            <div className="applicant-only flex flex-col font-light text-sm">
+              <div className="flex gap-2 pb-4">
+                {niches.map((niche, idx) => {
+                  return (
+                    <div
+                      key={idx}
+                      onClick={(e) => {
+                        const niche = e.target.innerText;
+                        const newNiches = niches.filter((nic) => nic !== niche);
+                        setNiches(newNiches);
+                      }}
+                      className={`flex items-center rounded-xl px-2 py-[1px] text-xs border ${
+                        theme === "dark"
+                          ? "bg-slate-900/90 hover:bg-gray-600"
+                          : "bg-gray-300 hover:bg-gray-400"
+                      } cursor-pointer`}
+                    >
+                      {niche}
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="flex flex-col gap-2">
+                <input
+                  type="text"
+                  id="nicheInput"
+                  placeholder="Search for niches"
+                  onChange={(e) => handleSearchChange(e)}
+                  className="bg-transparent outline-none w-full text-sm py-1 z-[12] focus:border-b border-blue-500"
+                />
+                <div className="flex flex-col bottom-0 left-0">
+                  {predictedNiches.length > 0 &&
+                    predictedNiches.slice(0, 4).map((niche, index) => {
+                      return (
+                        <div
+                          onClick={() => {
+                            setNiches([...niches, niche]);
+                            setPredictedNiches([]);
+                            document.getElementById("nicheInput").value = "";
+                          }}
+                          key={index}
+                          className="text-sm z-[12] rounded-md hover:bg-gray-300/40 hover:border-b border-teal-500 cursor-pointer"
+                        >
+                          {niche}
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+            </div>
+          )}
 
           {error && (
             <p className="text-xs text-red-600 italic w-full pl-4">{error}</p>

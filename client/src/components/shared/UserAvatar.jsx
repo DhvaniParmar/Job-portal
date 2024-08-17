@@ -27,11 +27,9 @@ const UserAvatar = () => {
   const handleLogout = async() => {
     try{
       dispatch(setProgress(30));
-      await fetch(`${baseUrl}user/logout`,{
-        method: "GET",
-      })
       dispatch(setProgress(70));
       localStorage.removeItem("token");
+      localStorage.removeItem("userData");
       dispatch(logout());
       dispatch(setProgress(100));
       navigate('/')

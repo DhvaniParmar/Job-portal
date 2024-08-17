@@ -18,6 +18,11 @@ import Me from "./components/dashboard/Me";
 import LoadingBar from "react-top-loading-bar";
 import { useDispatch, useSelector } from "react-redux";
 import { setProgress } from "./redux/progress/progressSlice";
+import SavedJobs from "./components/me/SavedJobs";
+import PostedJobs from "./components/me/PostedJobs";
+import AppliedJobs from "./components/me/AppliedJobs";
+import JobForm from "./components/forms/JobForm";
+import CompanyForm from "./components/forms/CompanyForm";
 
 const App = () => {
   const progress = useSelector((state) => state.progress.value);
@@ -41,9 +46,15 @@ const App = () => {
         {/* Dashboard Routes */}
         <Route path="/dashboard" element={<Dashboard />}>
           <Route path="/dashboard" element={<HomeComponent />} />
-          <Route path='me' element={<Me />} />
+          <Route path='me' element={<Me />} >
+            <Route path = '/dashboard/me' element={<SavedJobs />} />
+            <Route path = 'postedJobs' element={<PostedJobs />} />
+            <Route path = 'appliedJobs' element={<AppliedJobs />} />
+          </Route>
           <Route path="profile" element={<Profile />} />
           <Route path='search' element={<Search />} />
+          <Route path='post-job' element={<JobForm />} />
+          <Route path='add-company' element={<CompanyForm />} />
         </Route>
 
         {/* Job Routes */}

@@ -1,30 +1,38 @@
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 import ErrorHandler from "../middlewares/error.js";
-import { User } from "../models/userSchema.js";
+import { Company } from "../models/companySchema.js";
 import { Job } from "../models/jobSchema.js";
+import { User } from "../models/userSchema.js";
 
 //Checking whether all the given job schema data's are provided and authentication part for each field if user didn't provide throw an error
 
 export const postJob = catchAsyncErrors(async (req, res, next) => {
-    const { title, jobType, location, companyName, introduction, responsibilities, qualifications, offers, salary, hiringMultipleCandidates, personalWebsiteTitle,personalWebsiteUrl, jobNiche } = req.body;
-    
-    if (!title || !jobType || !location || !companyName || !introduction || !responsibilities || !qualifications || !salary || jobNiche) {
-        return next(new ErrorHandler("Please provide full job details.", 400))
-    }
-    if ((personalWebsiteTitle && !personalWebsiteUrl) || (!personalWebsiteTitle && personalWebsiteUrl)) {
-        return next(new ErrorHandler("Provide both the website url and title, or leave both blank.", 400));
-    }
+    const { title, description, salary, noOfOpenings, niches, company, postedBy } = req.body;
 
-    const postedBy = req.user._id;
-    const job = await Job.create({
-        title, jobType, location, companyName, introduction, responsibilities, qualifications, offers, salary, hiringMultipleCandidates, personalWebsite: { title: personalWebsiteTitle, url: personalWebsiteUrl }, jobNiche, postedBy
+    const jobData = {
+        title,
+        description,
+        salary,
+        noOfOpenings,
+        niches : niches.length > 0 ? niches : [],
+        company,
+        postedBy,
+    };
 
+    const job = await Job.create(jobData);
+    await User.findByIdAndUpdate(postedBy, { $push: { postedJobs: job._id } });
+    await Company.findByIdAndUpdate(company, { $push: { jobs: job._id } });
+
+    const updatedUser = await User.findById(postedBy,{
+        password: 0
     });
+    
 
     res.status(201).json({
         success: true,
         message: "Job posted successfully.",
-
+        job,
+        user : updatedUser
     })
 });
 

@@ -15,10 +15,10 @@ import Footer from "@/components/shared/Footer";
 const Home = () => {
   const theme = useSelector((state) => state.theme.value);
   const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
 
-  const user = localStorage.getItem("user");
   React.useEffect(() => {
-    if (user) navigate("/dashboard");
+    if (user.name) navigate("/dashboard");
   }, []);
 
   return (

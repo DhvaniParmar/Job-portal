@@ -1,42 +1,36 @@
 import mongoose from 'mongoose';
 
 const companySchema = new mongoose.Schema({
-    companyName: {
+    name: {
         type: String,
         required: true
     },
-    companyEmail: {
+    email: {
         type: String,
         required: true
     },
-    companyPhone: {
+    phone: {
         type: Number,
     },
-    companyAddress: {
+    address: {
         type: String,
         required: true
     },
-    companyWebsite: {
+    website: {
         type: String,
         required: true
     },
-    companyLogo: {
+    logo: {
         public_id: String,
         url: String
     },
-    companyDescription: {
+    description: {
         type: String,
         required: true
     },
-    companySize: {
-        type: String,
-        required: true
-    },
-    companySocials: {
-        linkedIn: String,
-        twitter: String,
-        facebook: String,
-        instagram: String
+    admin:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
     },
     companyJobs: [
         {

@@ -79,7 +79,7 @@ export const register = async (req, res, next) => {
       }
     }
     const user = await User.create(userData,{
-      password:0
+      password : 0
     });
     sendToken(user, 201, res, "User Registered.");
   } catch (error) {
@@ -112,23 +112,6 @@ export const login = catchAsyncErrors(async (req, res, next) => {
   sendToken(user, 200, res, "User logged in successfully.");
 });
 
-//now below this we are writing the code for logout the user.
-
-// agar hame user ko logout karna hai to ham bs iske cookie ko yha se khtm kar denge,
-//means we just delete the cookie of the user login, then the user will be logout.
-
-export const logout = catchAsyncErrors(async (req, res, next) => {
-  res
-    .status(200)
-    .cookie("token", "", {
-      expires: new Date(Date.now()),
-      httpOnly: true,
-    })
-    .json({
-      success: true,
-      message: "Logged out successfully.",
-    });
-});
 
 //now we create function that user can get their own details
 
