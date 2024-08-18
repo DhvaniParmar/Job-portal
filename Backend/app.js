@@ -17,7 +17,9 @@ const app = express();
 config({ path: "./config/config.env" });
 
 app.use(
-  cors()
+  cors({
+    origin: ["https://jobster-main.netlify.app", "http://localhost:5173"],
+  })
 );
 
 app.use(cookieParser());
