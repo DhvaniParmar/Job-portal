@@ -4,8 +4,8 @@
 
 //here we are calling the getJWTToken() funtion and generating the token with the help of function which is present in the userSchema
 
-export const sendToken = (user, statusCode, res, message) => {
-  const token = user.getJWTToken();
+export const sendToken = async (user, statusCode, res, message) => {
+  const token = await user.getJWTToken();
 
   const options = {
     expires: new Date(

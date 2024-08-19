@@ -77,10 +77,8 @@ export const register = async (req, res, next) => {
         }
       }
     }
-    const user = await User.create(userData,{
-      password : 0
-    });
-    sendToken(user, 201, res, "User Registered.");
+    const user = await User.create(userData);
+    await sendToken(user, 201, res, "User Registered.");
   } catch (error) {
     next(error);
   }
@@ -115,8 +113,11 @@ export const login = catchAsyncErrors(async (req, res, next) => {
 //now we create function that user can get their own details
 
 export const getUser = catchAsyncErrors(async (req, res) => {
-  const { userId } = req.body;
-  const user = await User.findById(userId,{password:0});
+  const { userId } = req.params;
+  const user = await User.findById(userId);
+  if (!user) {
+    return next(new ErrorHandler("User not found", 404));
+  }
   res.status(200).json({
     success: true,
     user,

@@ -171,7 +171,7 @@ export const fetchMyJobs = catchAsyncErrors(async (req, res) => {
     const totalJobs = await User.findById(userId).select(type);
     res.status(200).json({
         success: true,
-        myJobs : user[type],
+        jobs : user[type],
         totalPages : Math.ceil(totalJobs[type].length / 8 )
     });
 })

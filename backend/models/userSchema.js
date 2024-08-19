@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     enum: ["Applicant", "Employer"], //here we are giving only two option, not too much.
   },
-  createdAt: {
+  createdAt : {
     type: Date,
     default: Date.now,
   },

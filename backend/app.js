@@ -32,6 +32,8 @@ if (!fs.existsSync(tempDir)) {
 app.use(
   cors({
     origin: ["https://jobster-main.netlify.app", "http://localhost:5173"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
   })
 );
 

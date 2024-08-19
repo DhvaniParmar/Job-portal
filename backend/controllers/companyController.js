@@ -52,3 +52,29 @@ export const addCompany = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export const getCompanyDetails = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const company = await Company.findById(id);
+    if (!company) {
+      return res.status(404).json({ success: false, message: "Company not found" });
+    }
+    res.status(200).json({ success: true, company });
+}catch(error){
+  res.status(500).json({ success: false, message: error.message });
+}
+}
+
+export const getCompanyDetailsByName = async (req, res) => {
+  try {
+    const { name } = req.params;
+    const company = await Company.find({name}).populate("companyJobs").populate("admin", "name email profilePhoto");
+    if (!company) {
+      return res.status(404).json({ success: false, message: "Company not found" });
+    }
+    res.status(200).json({ success: true, company });
+}catch(error){
+  res.status(500).json({ success: false, message: error.message });
+}
+}

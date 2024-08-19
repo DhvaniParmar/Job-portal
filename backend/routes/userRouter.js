@@ -10,7 +10,7 @@ router.post("/login", login);
 // router.get("/logout", logout);
 //first it will autheticate then i will logout
 
-router.post("/getuser", getUser);
+router.get("/:userId", getUser);
 router.put("/update/profile", isAuthenticated, updateProfile)
 //updating our password in /password route navigation
 router.put("/update/profile/password", isAuthenticated, updatePassword)
