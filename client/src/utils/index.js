@@ -260,6 +260,6 @@ const upperMarquee = [
     },
   ]
 
-  const baseUrl = "http://localhost:4000/api/v1/";
+  const baseUrl = "https://n-j-backend.onrender.com/";
 
   export { baseUrl, upperMarquee, lowerMarquee, tags, carouselImages, jobTitles, jobs, testimonials, links };

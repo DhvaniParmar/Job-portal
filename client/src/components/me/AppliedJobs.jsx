@@ -1,7 +1,7 @@
 import React from 'react'
 
 const AppliedJobs = () => {
-  const role = 
+  // const role = 
   return (
     <div>
       Applied Jobs
