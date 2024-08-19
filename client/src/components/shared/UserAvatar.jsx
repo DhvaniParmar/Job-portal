@@ -45,8 +45,8 @@ const UserAvatar = () => {
   return (
     <Popover sideOffset={5}>
       <PopoverTrigger>
-        <Avatar>
-          <AvatarImage src={profilePhoto.url} />
+        <Avatar className={`${theme === 'dark' && 'text-black'} hover:shadow-[0_0_25px_gray]`}>
+          <AvatarImage src={profilePhoto?.url ? profilePhoto.url : null} />
           <AvatarFallback>{getInitials(user?.name)}</AvatarFallback>
         </Avatar>
       </PopoverTrigger>

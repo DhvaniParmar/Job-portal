@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
@@ -23,6 +23,7 @@ import PostedJobs from "./components/me/PostedJobs";
 import AppliedJobs from "./components/me/AppliedJobs";
 import JobForm from "./components/forms/JobForm";
 import CompanyForm from "./components/forms/CompanyForm";
+import UserById from "./pages/UserById";
 
 const App = () => {
   const progress = useSelector((state) => state.progress.value);
@@ -32,7 +33,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <LoadingBar
-        color="gray"
+        color="#60629B"
         progress={progress}
         onLoaderFinished={() => dispatch(setProgress(0))}
       />
@@ -61,6 +62,8 @@ const App = () => {
             <Route path= 'companies/:name' element={<CompanyDetails />} />
             <Route path="jobs/:id" element={<JobDetails />} />
         </Route>
+
+        <Route path="/users/:userId" element={<UserById />} />
 
         {/* Not Found */}
         <Route path="*" element={<div>Not Found</div>} />

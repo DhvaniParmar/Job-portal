@@ -1,11 +1,15 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import JobPage from './JobPage'
 
 const AppliedJobs = () => {
-  // const role = 
+  const navigate = useNavigate()
+  const userRole = useSelector(state => state.user.role)
+  if(userRole !== 'Applicant') navigate('/dashboard/me')
+
   return (
-    <div>
-      Applied Jobs
-    </div>
+    <JobPage query="appliedJobs" title='Applied Jobs'/>
   )
 }
 

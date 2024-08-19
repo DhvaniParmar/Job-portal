@@ -17,6 +17,7 @@ export const userSlice = createSlice({
     bio: userData?.bio || '',
     savedJobs: userData?.savedJobs || [],
     appliedJobs: userData?.appliedJobs || [],
+    postedJobs: userData?.postedJobs || [],
     company: userData?.company || '',
   },
   reducers: {
@@ -33,6 +34,7 @@ export const userSlice = createSlice({
       state.bio = action.payload?.bio
       state.savedJobs = action.payload?.savedJobs
       state.appliedJobs = action.payload?.appliedJobs
+      state.postedJobs = action.payload?.postedJobs
       state.company = action.payload?.company
     },
     logout: (state) => {
@@ -48,6 +50,7 @@ export const userSlice = createSlice({
       state.bio = ''
       state.savedJobs = []
       state.appliedJobs = []
+      state.postedJobs = []
       state.company = ''
     },
 }

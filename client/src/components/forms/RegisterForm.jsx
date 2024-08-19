@@ -149,7 +149,7 @@ const RegisterForm = () => {
       });
       dispatch(setProgress(60));
       const data = await res.json();
-      if (data.success) {
+      if (data.token) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("userData", JSON.stringify(data.user));
         dispatch(updateUser(data.user));

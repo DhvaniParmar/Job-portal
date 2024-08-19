@@ -1,11 +1,8 @@
+import UserProfile from "@/components/UserProfile";
 import { setProgress } from "@/redux/progress/progressSlice";
-import { motion } from "framer-motion";
-import { jwtDecode } from "jwt-decode";
-import React, { Suspense, useEffect } from "react";
-import { FaEdit } from "react-icons/fa";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { PacmanLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -16,69 +13,11 @@ const Profile = () => {
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    dispatch(setProgress(300));
+    dispatch(setProgress(100));
   }, []);
 
   return (
-    <Suspense
-      fallback={
-        <div className="w-screen h-screen flex items-center justify-center">
-          <PacmanLoader />
-        </div>
-      }
-    >
-      <motion.div
-        initial={{ y: "20px" }}
-        animate={{ y: 0 }}
-        exit={{ y: "20px" }}
-        transition={{ ease: "linear", duration: 0.3 }}
-        className="w-full pt-6 flex flex-col max-lg:px-4"
-      >
-        <div className="header">
-          <img
-            src="/images/header.png"
-            alt="header"
-            className="w-full aspect-[16/5] object-cover"
-          />
-          <div className="details flex items-end gap-4 h-fit ">
-            {user.profilePhoto ? (
-              <img
-                src={user?.profilePhoto.url}
-                alt={user?.name}
-                className="w-[20%] aspect-square rounded-full overflow-hidden border-2 z-[22] -mt-[10%] h-[120%] shadow-[0_0_20px_gray]"
-              />
-            ) : (
-              <img
-                src="https://github.com/shadcn.png"
-                alt={user?.name}
-                className="w-[20%] aspect-square rounded-full overflow-hidden border-2 z-[22] -mt-[10%] h-[120%] shadow-[0_0_20px_gray]"
-              />
-            )}
-            <div className="flex justify-between items-center flex-1">
-              <div className="creds flex flex-col justify-end pb-2 h-full">
-                <div className="flex max-lg:flex-col items-start">
-                  <p className="font-bold text-xl capitalize mb-1">
-                    {user.name}{" "}
-                  </p>
-                  <p className={`text-sm flex w-fit md:mx-2 px-2 py-1 rounded-lg ${user.role === 'Applicant' ? 'bg-blue-700/70' : 'bg-purple-700'} shadow-[0_0_25px_gray]`}>
-                    {user.role}
-                  </p>
-                </div>
-                <p>Id : {user.id}</p>
-              </div>
-              {user.id === jwtDecode(localStorage.getItem("token")).id && (
-                <Link
-                  to="/dashboard/profile/edit"
-                  className="auth-button mx-12 flex items-center gap-2"
-                >
-                  Edit <FaEdit />
-                </Link>
-              )}
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    </Suspense>
+    <UserProfile user={user} />
   );
 };
 

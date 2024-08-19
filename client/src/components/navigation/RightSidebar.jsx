@@ -14,7 +14,7 @@ const RightSidebar = () => {
 
   const [error, setError] = useState("");
   const [jobs, setJobs] = useState([]);
-  const [companies, setCompanies] = useState([])
+  const [companies, setCompanies] = useState([]);
 
   useEffect(() => {
     const fetchSmallCards = async () => {
@@ -47,10 +47,10 @@ const RightSidebar = () => {
             Suggested Jobs <PiSuitcaseSimpleThin />
           </p>
           {error && <p className="text-red-500 text-sm">{error}</p>}
-          <div className="jobcard-small">
+          <div className="jobcard-small ">
             <Suspense
               fallback={
-                <div className="w-full h-1/2 flex items-center justify-center">
+                <div className="w-full h-1/2 flex items-center justify-center ">
                   <PacmanLoader />
                 </div>
               }
@@ -59,39 +59,41 @@ const RightSidebar = () => {
                 return (
                   <div
                     key={idx}
-                    className={`flex items-center justify-between p-2 border-b border-gray-200 hover-effect relative before:h-[1px] ${
+                    className={`flex items-center p-2 border-b gap-4 my-2 border-gray-200 hover-effect relative before:h-[1px] ${
                       theme === "dark" && "hover-effect-dark"
                     }`}
                   >
-                    <div className="flex items-center gap-2">
+                    <Link
+                      to={`/dashboard/companies/${job.company.name}`}
+                      className="w-12 h-12 rounded-full flex items-center justify-center overflow-hidden hover:shadow-[0_0_25px_gray]"
+                    >
+                      <img
+                        src={job.company.logo.url}
+                        alt="logo"
+                        className="w-12 h-12 object-contain flex items-center justify-center"
+                      />
+                    </Link>
+                    <div className="flex flex-col">
+                      <Link
+                        to={`/dashboard/jobs/${job._id}`}
+                        className="text-md font-semibold"
+                      >
+                        {job.title}
+                      </Link>
+                      <div className="flex w-full justify-between items-center">
                       <Link
                         to={`/dashboard/companies/${job.company.name}`}
-                        className="w-12 h-12 rounded-full flex items-center justify-center overflow-hidden hover:shadow-[0_0_25px_gray]"
+                        className="text-xs font-semibold"
                       >
-                        <img
-                          src={job.company.logo.url}
-                          alt="logo"
-                          className="w-12 h-12 object-contain flex items-center justify-center"
-                        />
+                        {job.company.name}
                       </Link>
-                      <div className="flex flex-col">
-                        <Link
-                          to={`/dashboard/jobs/${job._id}`}
-                          className="text-sm font-semibold"
-                        >
-                          {job.title}
-                        </Link>
-                        <Link
-                          to={`/dashboard/companies/${job.company.name}`}
-                          className="text-xs font-semibold"
-                        >
-                          {job.company.name}
-                        </Link>
-                        <p className="text-xs">{job.salary}</p>
+                        <p className="text-[0.6rem] ">
+                          {job.location
+                            ? job.location
+                            : job.company?.location || "Remote"}
+                        </p>
                       </div>
-                    </div>
-                    <div className="flex flex-col items-end w-1/3 overflow-hidden">
-                      <p className="text-xs ">{job.location ? job.location : job.company.location}</p>
+                      <p className="text-xs">Salary : {job.salary}</p>
                     </div>
                   </div>
                 );
