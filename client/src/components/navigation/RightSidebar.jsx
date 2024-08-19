@@ -82,7 +82,7 @@ const RightSidebar = () => {
                           {job.title}
                         </Link>
                         <Link
-                          to={`dashboard/companies/${job.company.name}`}
+                          to={`/dashboard/companies/${job.company.name}`}
                           className="text-xs font-semibold"
                         >
                           {job.company.name}

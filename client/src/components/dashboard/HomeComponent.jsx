@@ -59,7 +59,7 @@ const HomeComponent = () => {
           </span>
         </Link>
       )}
-      <div className="flex flex-col justify-start">
+      <div className="flex flex-col justify-start min-h-screen">
         <div className="intro pb-4 px-2">
           <h1 className="text-3xl font-bold capitalize">
             Welcome {user.name.split(" ")[0]}

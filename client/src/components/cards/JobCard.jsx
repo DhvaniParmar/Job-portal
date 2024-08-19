@@ -21,7 +21,7 @@ const JobCard = ({ job }) => {
       >
         <p className="text-xl font-bold ">{job.title}</p>
         <Link
-          to={`/companies/${job.company.name}`}
+          to={`/dashboard/companies/${job.company.name}`}
           className="company relative flex items-center cursor-pointer py-1 my-1 pr-4 w-fit"
         >
           <img
@@ -36,7 +36,7 @@ const JobCard = ({ job }) => {
         <p className="">{job.location}</p>
         <p>Salary - {job.salary}</p>
         <Link
-          to={`/jobs/${job._id}`}
+          to={`/dashboard/jobs/${job._id}`}
           className={`group hover-effect text-xs py-1 ${
             theme === "dark" && "hover-effect-dark"
           }`}

@@ -22,7 +22,9 @@ const Profile = () => {
   return (
     <Suspense
       fallback={
-        <div className="w-screen h-screen flex items-center justify-center"><PacmanLoader/></div>
+        <div className="w-screen h-screen flex items-center justify-center">
+          <PacmanLoader />
+        </div>
       }
     >
       <motion.div
@@ -53,12 +55,22 @@ const Profile = () => {
               />
             )}
             <div className="flex justify-between items-center flex-1">
-              <div className="creds flex flex-col justify-end items- h-full">
-                <p className="font-bold text-xl capitalize">{user.name}</p>
+              <div className="creds flex flex-col justify-end pb-2 h-full">
+                <div className="flex max-lg:flex-col items-start">
+                  <p className="font-bold text-xl capitalize mb-1">
+                    {user.name}{" "}
+                  </p>
+                  <p className={`text-sm flex w-fit md:mx-2 px-2 py-1 rounded-lg ${user.role === 'Applicant' ? 'bg-blue-700/70' : 'bg-purple-700'} shadow-[0_0_25px_gray]`}>
+                    {user.role}
+                  </p>
+                </div>
                 <p>Id : {user.id}</p>
               </div>
               {user.id === jwtDecode(localStorage.getItem("token")).id && (
-                <Link to='/dashboard/profile/edit' className="auth-button mx-12 flex items-center gap-2">
+                <Link
+                  to="/dashboard/profile/edit"
+                  className="auth-button mx-12 flex items-center gap-2"
+                >
                   Edit <FaEdit />
                 </Link>
               )}
