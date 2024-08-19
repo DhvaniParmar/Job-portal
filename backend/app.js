@@ -12,9 +12,22 @@ import jobRouter from "./routes/jobRouter.js";
 import applicationRouter from "./routes/applicationRouter.js";
 import companyRouter from "./routes/companyRouter.js";
 import { newsLetterCron } from "./automation/newsLetterCron.js";
+import path from "path";
+import fs from "fs";
+import { fileURLToPath } from 'url';
+
+// Get the current directory in an ES module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 config({ path: "./config/config.env" });
+
+// Ensure the 'temp' directory exists
+const tempDir = path.join(__dirname, 'temp');
+if (!fs.existsSync(tempDir)) {
+  fs.mkdirSync(tempDir);
+}
 
 app.use(
   cors({
