@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
 import React from "react";
 import { useSelector } from "react-redux";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 const Me = () => {
-  const user = useSelector((state) => state.user);  
+  const user = useSelector((state) => state.user);
+  const theme = useSelector((state) => state.theme.value);
 
   return (
     <motion.div
@@ -15,13 +16,40 @@ const Me = () => {
     >
       <p className="text-2xl font-bold">Your Jobs</p>
       <div className="flex bg-gry-800/30 md:mx-4 lg:mx-2 px-2 rounded-md justify-between items-center font-bold">
-        <Link to="/dashboard/me" className="w-1/2 flex justify-center hover-effect relative py-2 before:h-[1px]">Saved Jobs</Link>
-        <div className="border mx-2 border-black py-4 w-[1px] h-full shadow-[0_0_30px_gray]"></div>
-        {user.role === "Applicant" ? (
-          <Link to="appliedJobs" className="w-1/2 flex justify-center hover-effect relative py-2 before:h-[1px]">Applied Jobs</Link>
-        ) : (
-          <Link to="postedJobs" className="w-1/2 flex justify-center hover-effect relative py-2 before:h-[1px]">Posted Jobs</Link>
-        )}
+        {[
+          {
+            url: "",
+            value: "Saved Jobs",
+            applicantVisibility: true,
+          },
+          {
+            url: "appliedJobs",
+            value: "Applied Jobs",
+            applicantVisibility: true,
+          },
+          {
+            url: "postedJobs",
+            value: "Posted Jobs",
+            applicantVisibility: false,
+          },
+        ].map((link, index) => {
+          const location = useLocation();
+          const isActive =
+            (location.pathname.includes(link.url) && link.url !== "") ||
+            (link.url === "" && location.pathname === "/dashboard/me");
+          const visibility =  ( user.role === "Applicant" && link.url === 'postedJobs' ) || ( user.role === "Employer" && link.url === 'appliedJobs' ) ? false : true;
+          return (
+            <Link
+              key={index}
+              to={link.url}
+              className={`w-1/2 flex justify-center hover-effect relative py-2 before:h-[1px] ${
+                isActive && "before:w-full"
+              } ${!visibility ? 'hidden' : 'block'} ${theme === 'dark' && 'before:bg-blue-600'}`}
+            >
+              {link.value}
+            </Link>
+          );
+        })}
       </div>
       <Outlet />
     </motion.div>

@@ -22,6 +22,7 @@ const formSchema = z.object({
     message: "Job Title must be at least 3 characters long.",
   }),
   noOfOpenings: z.string(),
+  jobLocation: z.string().optional(),
   salary: z.string().optional(),
   jobDescription: z.string().min(100, {
     message: "Job Description must be at least 100 characters long.",
@@ -53,6 +54,7 @@ const JobForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       jobTitle: "",
+      jobLocation: "",
       noOfOpenings: "",
       salary: "",
       jobDescription: "",
@@ -68,6 +70,7 @@ const JobForm = () => {
       formData.append("noOfOpenings", values.noOfOpenings);
       formData.append("salary", values.salary);
       formData.append("description", values.jobDescription);
+      formData.append("location", values.jobLocation);
       formData.append("company", user.company);
       formData.append("postedBy", user.id);
 
@@ -146,6 +149,36 @@ const JobForm = () => {
                         className={`absolute bg-inherit backdrop-blur-md text-sm font-light z-[10] top-2 left-2 -translate-y-5 scale-75 duration-300 transform px-2 peer-focus:top-2 peer-focus:left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:scale-75 peer-focus:-translate-y-5 start-1`}
                       >
                         Job Title
+                      </label>
+                    </div>
+                  </FormControl>
+                  <FormMessage className="text-xs font-medium" />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="jobLocation"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <div className="flex flex-col gap-2 relative">
+                      <input
+                        type="text"
+                        id="location"
+                        placeholder=" "
+                        className={`block bg-inherit border-[1px] appearance-none rounded-md focus:outline-none p-2 ${
+                          theme === "dark"
+                            ? "focus:border-white/40"
+                            : "focus:border-slate-900"
+                        } peer`}
+                        {...field}
+                      />
+                      <label
+                        htmlFor="location"
+                        className={`absolute bg-inherit backdrop-blur-md text-sm font-light z-[10] top-2 left-2 -translate-y-5 scale-75 duration-300 transform px-2 peer-focus:top-2 peer-focus:left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:scale-75 peer-focus:-translate-y-5 start-1`}
+                      >
+                        Job Location
                       </label>
                     </div>
                   </FormControl>

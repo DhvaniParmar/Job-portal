@@ -29,7 +29,7 @@ const Pagination = ({ totalPages = 10 }) => {
       <button
         className="rounded-lg px-2 py-1 border border-teal-600 auth-button disabled:hover:before:h-0 disabled:hover:shadow-none disabled:hover:text-current disabled:cursor-not-allowed disabled:opacity-50"
         onClick={() => handleNavigation('next')}
-        disabled={page == totalPages}
+        disabled={page === totalPages}
       >
         Next
       </button>

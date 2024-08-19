@@ -28,12 +28,15 @@ const App = () => {
   const progress = useSelector((state) => state.progress.value);
   const dispatch = useDispatch();
 
-  const locomotiveScroll = new LocomotiveScroll()
+  const locomotiveScroll = new LocomotiveScroll();
   return (
     <BrowserRouter>
-    <LoadingBar color='gray' progress={progress} onLoaderFinished={()=> dispatch(setProgress(0))}/>
+      <LoadingBar
+        color="gray"
+        progress={progress}
+        onLoaderFinished={() => dispatch(setProgress(0))}
+      />
       <Routes>
-      
         {/* Dashboard */}
         <Route path="/" element={<Home />} />
 
@@ -46,26 +49,21 @@ const App = () => {
         {/* Dashboard Routes */}
         <Route path="/dashboard" element={<Dashboard />}>
           <Route path="/dashboard" element={<HomeComponent />} />
-          <Route path='me' element={<Me />} >
-            <Route path = '/dashboard/me' element={<SavedJobs />} />
-            <Route path = 'postedJobs' element={<PostedJobs />} />
-            <Route path = 'appliedJobs' element={<AppliedJobs />} />
-          </Route>
-          <Route path="profile" element={<Profile />} />
-          <Route path='search' element={<Search />} />
-          <Route path='post-job' element={<JobForm />} />
-          <Route path='add-company' element={<CompanyForm />} />
+            <Route path="me" element={<Me />}>
+              <Route path="" element={<SavedJobs />} />
+              <Route path="postedJobs" element={<PostedJobs />} />
+              <Route path="appliedJobs" element={<AppliedJobs />} />
+            </Route>
+            <Route path="profile" element={<Profile />} />
+            <Route path="search" element={<Search />} />
+            <Route path="post-job" element={<JobForm />} />
+            <Route path="add-company" element={<CompanyForm />} />
+            <Route path= 'companies/:name' element={<CompanyDetails />} />
+            <Route path="jobs/:id" element={<JobDetails />} />
         </Route>
-
-        {/* Job Routes */}
-        <Route path='/jobs/:id' element={<JobDetails />} />
-        <Route path='/companies/:company' element={<CompanyDetails />} />
-
-        
 
         {/* Not Found */}
         <Route path="*" element={<div>Not Found</div>} />
-
       </Routes>
     </BrowserRouter>
   );
