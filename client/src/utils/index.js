@@ -260,6 +260,6 @@ const upperMarquee = [
     },
   ]
 
-  const baseUrl = "https://n-j-backend.onrender.com/";
+  const baseUrl = "https://jobster-backend-sc7n.onrender.com/api/v1/";
 
   export { baseUrl, upperMarquee, lowerMarquee, tags, carouselImages, jobTitles, jobs, testimonials, links };
