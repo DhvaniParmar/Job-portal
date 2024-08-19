@@ -16,7 +16,9 @@ const jobSchema = new mongoose.Schema({
     },
     salary: {
         type: String,
-        required: true
+    },
+    location: {
+        type: String,
     },
     noOfOpenings: {
         type : Number,
@@ -25,7 +27,6 @@ const jobSchema = new mongoose.Schema({
     niches: [
         {
             type: String,
-            required: true
         }
     ],
     jobPostedOn: {

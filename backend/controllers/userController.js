@@ -9,13 +9,12 @@ import bcrypt from "bcrypt";
 
 export const register = async (req, res, next) => {
   try {
-    console.log(req.body)
     const { name, email, phone, password, role, niches } = req.body
     
 
     if (!name || !email || !phone || !password || !role) {
       return next(
-        new ErrorHandler("All fields are required, write again. in first" , 400)
+        new ErrorHandler("All fields are required, write again." , 400)
       );
     }
 

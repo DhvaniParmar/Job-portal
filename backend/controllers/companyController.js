@@ -7,6 +7,11 @@ export const addCompany = async (req, res) => {
     const { name, email, phone, address, website, description, admin } =
       req.body;
 
+      const existingCompany = await Company.findOne({ name });
+      if (existingCompany) {
+        return res.status(400).json({ success: false, message: "Company already exists" });
+      }
+
       const companyData = {
         name,
         email,
@@ -26,16 +31,14 @@ export const addCompany = async (req, res) => {
               { folder: "Company_Logo" }
             );
             if (!cloudinaryResponse || cloudinaryResponse.error) {
-              return next(
-                new ErrorHandler("Failed to upload company logo to cloud.", 500)
-              );
+              return res.status(500).json({ success: false, message: "Failed to upload logo to cloud." });
             }
             companyData.logo = {
               public_id: cloudinaryResponse.public_id, // we are storing the logo in the companyData list.
               url: cloudinaryResponse.secure_url,
             };
           } catch (error) {
-            return next(new ErrorHandler("Failed to upload resume", 500));
+            return res.status(500).json({ success: false, message: "Failed to upload logo" });
           }
         }
       }

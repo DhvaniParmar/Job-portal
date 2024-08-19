@@ -1,6 +1,6 @@
 import express from "express";
 import { isAuthenticated } from "../middlewares/auth.js";
-import { postJob, getAllJobs, getASingleJob, getMyJobs, deleteJob  } from "../controllers/jobController.js";
+import { postJob, getAllJobs, getASingleJob, getMyJobs, deleteJob, fetchSmallCards, fetchMyJobs  } from "../controllers/jobController.js";
 
 const router = express.Router();
 
@@ -8,9 +8,12 @@ const router = express.Router();
 
 router.post("/post", postJob);
 router.get("/getall", getAllJobs);
+router.get("/fetchSmallCards", fetchSmallCards);
 router.get("/getmyjobs", isAuthenticated, getMyJobs);
 router.delete("/delete/:id", isAuthenticated, deleteJob);
-router.get("/get/:id", isAuthenticated, getASingleJob);
+router.get("/get/:id", getASingleJob);
+
+router.get("/fetchMyJobs", fetchMyJobs);
 
 
 export default router;
