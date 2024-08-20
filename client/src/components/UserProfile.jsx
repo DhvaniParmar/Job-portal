@@ -119,7 +119,7 @@ const UserProfile = ({ user }) => {
               <Link
                 to={user.resume.url}
                 target="_blank"
-                className="hover-effect"
+                className="hover-effect relative"
               >
                 <iframe src={user.resume.url} width="100%" height="600px" type="application/pdf" ></iframe>
 
