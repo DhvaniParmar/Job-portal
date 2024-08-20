@@ -130,16 +130,38 @@ export const deleteJob = catchAsyncErrors(async (req, res, next) => {
 });
 
 //getting a single job 
+// export const getASingleJob = catchAsyncErrors(async (req, res, next) => {
+//     const { id } = req.params;
+//     const job = await Job.findById(id,{}.populate("company", "name logo location"));
+//     res.status(200).json({
+//         success: true,
+//         job
+//     }); 
+//     if (!job) {
+//         return next(new ErrorHandler("Oops! Job not found.", 404));
+//     }
+// });
+
 export const getASingleJob = catchAsyncErrors(async (req, res, next) => {
     const { id } = req.params;
-    const job = await Job.findById(id,{}.populate("company", "name logo location"));
-    res.status(200).json({
-        success: true,
-        job
-    }); 
+    const job = await Job.findById(id).populate({
+        model : "Company",
+        path : "company",
+        select : "name logo location admin description postedBy",
+        populate : {
+            model : "User",
+            path : "admin",
+            select : "name email profilePhoto "
+        }
+    });
     if (!job) {
         return next(new ErrorHandler("Oops! Job not found.", 404));
     }
+    res.status(200).json({
+        success: true,
+        job
+    });
+   
 });
 
 //fetching jobs small details for right nav

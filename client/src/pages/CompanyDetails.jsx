@@ -23,6 +23,7 @@ const Company = () => {
         const res = await fetch(`${baseUrl}company/name/${name}`);
         const data = await res.json();
         if (data.success) setCompany(data.company[0]);
+        else setCompany({ error: true });
         dispatch(setProgress(100));
       } catch (error) {
         console.log(error.message);
@@ -46,7 +47,9 @@ const Company = () => {
         transition={{ ease: "linear", duration: 0.3 }}
         className="w-full pt-6 flex flex-col max-lg:px-4 gap-4"
       >
-        {!company && <p className="text-center">Company not found</p>}
+        {!company && <div className="text-center w-full h-screen flex items-center justify-center"><PacmanLoader/></div>}
+
+        {company?.error && <p className="text-center">Company Not found</p>}
 
         {company && (
           <div className="companyCard flex flex-col gap-4">

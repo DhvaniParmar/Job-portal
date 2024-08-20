@@ -50,18 +50,18 @@ const UserProfile = ({ user }) => {
             alt="header"
             className="w-full aspect-[16/5] object-cover"
           />
-          <div className="details flex items-end gap-4 h-fit ">
+          <div className="details flex max-sm:items-center items-end gap-4 h-fit ">
             {user?.profilePhoto ? (
               <img
                 src={user?.profilePhoto.url}
                 alt={user?.name}
-                className="w-[20%] aspect-square rounded-full overflow-hidden border-2 z-[22] -mt-[10%] h-[120%] shadow-[0_0_20px_gray]"
+                className="w-[20%] aspect-square rounded-full overflow-hidden border-2 z-[22] md:-mt-[10%] h-[120%] shadow-[0_0_20px_gray]"
               />
             ) : (
               <img
                 src="https://github.com/shadcn.png"
                 alt={user?.name}
-                className="w-[20%] aspect-square rounded-full overflow-hidden border-2 z-[22] -mt-[10%] h-[120%] shadow-[0_0_20px_gray]"
+                className="w-[20%] aspect-square rounded-full overflow-hidden border-2 z-[22] md:-mt-[10%] h-[120%] shadow-[0_0_20px_gray]"
               />
             )}
             <div className="flex justify-between items-center flex-1">
@@ -90,9 +90,9 @@ const UserProfile = ({ user }) => {
               {isSelfProfile && (
                 <Link
                   to="/dashboard/profile/edit"
-                  className="auth-button mx-12 flex items-center gap-2"
+                  className="auth-button flex items-center gap-2"
                 >
-                  Edit <FaEdit />
+                  <span className="max-sm:hidden">Edit</span> <FaEdit />
                 </Link>
               )}
             </div>
