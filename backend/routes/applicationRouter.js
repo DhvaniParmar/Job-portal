@@ -3,6 +3,7 @@ import { isAuthenticated } from "../middlewares/auth.js";
 import {
   deleteApplication,
   employerGetAllApplication,
+  getApplications,
   jobSeekerGetAllApplication,
   postApplication,
 } from "../controllers/applicationController.js";
@@ -17,7 +18,6 @@ router.post(
 
 router.get(
   "/employer/getall",
-  isAuthenticated,
   employerGetAllApplication
 );
 
@@ -26,6 +26,11 @@ router.get(
   isAuthenticated,
   jobSeekerGetAllApplication
 );
+
+router.post(
+  "/get",
+  getApplications
+)
 
 router.delete("/delete/:id", isAuthenticated, deleteApplication);
 

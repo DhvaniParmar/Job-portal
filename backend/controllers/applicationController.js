@@ -17,7 +17,7 @@ export const postApplication = catchAsyncErrors(async (req, res, next) => {
     phone,
     address,
     coverLetter,
-    role: "Job Seeker",
+    role: "Applicant",
   };
   const jobDetails = await Job.findById(id);
   if (!jobDetails) {
@@ -84,6 +84,7 @@ export const postApplication = catchAsyncErrors(async (req, res, next) => {
 
 //People who will post the job for the employeer, this below code is for it.
 // if employer want to get the jobseeker application.
+
 export const employerGetAllApplication = catchAsyncErrors(
   async (req, res, next) => {
     const { _id } = req.user;
@@ -146,5 +147,32 @@ export const deleteApplication = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "Application Deleted.",
+  });
+});
+
+//to get the applications details
+export const getApplications = catchAsyncErrors(async (req, res) => {
+  const { jobId } = req.body;
+  const { page } = req.query || 1
+  const job = await Job.findById(jobId).populate({
+    path : 'applications',
+    select : '_id coverLetter applicant appliedOn',
+    populate : {
+      model : 'User',
+      path : 'applicant',
+      select : 'name email bio profilePhoto _id niches'
+    },
+    limit : 1,
+    skip : ( page - 1 ) * 1,
+    sort : { appliedOn : -1 }
+  });
+  const totalApplications = await Job.findById(jobId).select('applications');
+  if (!job.applications) {
+    return next(new ErrorHandler("Application not found.", 404));
+  }
+  res.status(200).json({
+    success: true,
+    applications : job.applications,
+    totalPages : Math.ceil(totalApplications.applications.length / 1)
   });
 });

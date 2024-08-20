@@ -1,8 +1,8 @@
 import { setProgress } from "@/redux/progress/progressSlice";
 import { motion } from "framer-motion";
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PacmanLoader } from "react-spinners";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -21,7 +21,7 @@ const formSchema = z.object({
   jobTitle: z.string().min(3, {
     message: "Job Title must be at least 3 characters long.",
   }),
-  noOfOpenings: z.string(),
+  noOfOpenings: z.any(),
   jobLocation: z.string().optional(),
   salary: z.string().optional(),
   jobDescription: z.string().min(100, {
@@ -29,15 +29,25 @@ const formSchema = z.object({
   }),
 });
 
-const JobForm = () => {
+const JobForm = ({  purpose = "Post", jobId = "" }) => {
   const theme = useSelector((state) => state.theme.value);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
 
+  const { id } = useParams();
+
   const [error, setError] = React.useState(null);
   const [niches, setNiches] = React.useState([]);
   const [predictedNiches, setPredictedNiches] = React.useState([]);
+
+  const [defaultJobFormValues, setDefaultJobFormValues] = useState({
+    jobTitle: "",
+    jobLocation: "",
+    noOfOpenings: "",
+    salary: "",
+    jobDescription: "",
+  });
 
   //To predict and add niches in the form.
   const handleSearchChange = (e) => {
@@ -52,13 +62,7 @@ const JobForm = () => {
 
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      jobTitle: "",
-      jobLocation: "",
-      noOfOpenings: "",
-      salary: "",
-      jobDescription: "",
-    },
+    defaultValues: defaultJobFormValues,
   });
 
   const handlePostJob = async (values) => {
@@ -73,6 +77,7 @@ const JobForm = () => {
       formData.append("location", values.jobLocation);
       formData.append("company", user.company);
       formData.append("postedBy", user.id);
+      formData.append("jobId", jobId);
 
       // append niches
       if (niches.length > 0) {
@@ -88,7 +93,7 @@ const JobForm = () => {
       if (data.success) {
         dispatch(setProgress(100));
         dispatch(updateUser(data.user));
-        navigate(`dashboard/jobs/${data.job._id}`);
+        navigate(`/dashboard/jobs/${data.job._id}`);
       } else {
         dispatch(setProgress(100));
         setError(data.message);
@@ -99,10 +104,35 @@ const JobForm = () => {
   };
 
   useEffect(() => {
-    dispatch(setProgress(100));
+    dispatch(setProgress(50));
     if (user.role !== "Employer") navigate("/dashboard");
-    if (!user.company) navigate("/dashboard/add-company");
-  }, []);
+    if (purpose === "Post" && !user.company) navigate("/dashboard/add-company");
+
+    if (purpose === "Edit") {
+      const fetchJob = async () => {
+        try {
+          dispatch(setProgress(50));
+          const res = await fetch(`${baseUrl}job/get/${id}`);
+          const data = await res.json();
+          if (data.success) {
+            form.reset({
+              jobTitle: data.job.title,
+              jobDescription: data.job.description,
+              jobLocation: data.job.location || "",
+              salary: data.job.salary,
+              noOfOpenings: data.job.noOfOpenings,
+            });
+            setNiches(data.job.niches);
+          }
+          dispatch(setProgress(100));
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchJob();
+    }
+    dispatch(setProgress(100));
+  }, [form.reset]);
 
   return (
     <Suspense
@@ -119,7 +149,7 @@ const JobForm = () => {
         transition={{ ease: "linear", duration: 0.3 }}
         className="w-full pt-6 flex flex-col max-lg:px-4"
       >
-        <p className="text-3xl font-bold">Post a new Job</p>
+        <p className="text-3xl font-bold">{purpose} Job</p>
 
         <Form {...form}>
           <form
@@ -282,7 +312,7 @@ const JobForm = () => {
               )}
             />
 
-            <div className="applicant-only flex flex-col font-light text-sm">
+            <div className="niches flex flex-col font-light text-sm">
               <div className="flex gap-2 pb-4">
                 {niches.map((niche, idx) => {
                   return (
@@ -338,7 +368,7 @@ const JobForm = () => {
             )}
 
             <button type="submit" className="auth-button w-full">
-              Post Job
+              {purpose} Job
             </button>
           </form>
         </Form>

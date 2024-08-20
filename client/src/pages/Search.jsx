@@ -13,7 +13,7 @@ const Search = () => {
   const [searchParams] = useSearchParams();
   const jobTitle = searchParams.get("jobTitle");
   const location = searchParams.get("location");
-  const page = parseInt(searchParams.get("page")) || 1;
+  const [ page, setPage ] = useState(parseInt(searchParams.get("page")) || 1);
   const [results, setResults] = useState(null);
   const [refetch, setRefetch] = useState(false);
 
@@ -41,7 +41,7 @@ const Search = () => {
       }
     };
     fetchResults();
-  }, [refetch]);
+  }, [refetch, page]);
 
   return (
     <motion.div
@@ -91,7 +91,7 @@ const Search = () => {
           </>
         </Suspense>
       </div>
-      {results && <Pagination totalPages={results.totalPages} />}
+      {results && <Pagination totalPages={results.totalPages} setPage={setPage}/>}
     </motion.div>
   );
 };

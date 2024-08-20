@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { PacmanLoader } from "react-spinners";
 import JobCard from "../cards/JobCard";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,10 +11,10 @@ import Pagination from "../shared/Pagination";
 const JobPage = ({query, title}) => {
   const [ searchParams ] = useSearchParams()
 
-  const [results, setResults] = React.useState(null);
+  const [results, setResults] = useState(null);
   const userId = useSelector(state => state.user.id)
 
-  const page = searchParams.get("page") || 1;
+  const [ page, setPage ] = useState(searchParams.get("page") || 1);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const JobPage = ({query, title}) => {
       }
     };
     fetchMyJobs();
-  }, []);
+  }, [page]);
 
   return (
     <motion.div
@@ -44,7 +44,7 @@ const JobPage = ({query, title}) => {
       className="flex flex-col py-4"
     >
       <p className="text-2xl font-semibold tracking-tighter pb-4">Your {title}</p>
-      {results && results?.job?.length > 0 && <p className="text-sm font-light">You have {title.split(' ')[0]} {results.jobs.length + (( results.totalPages -1 ) *8) } jobs</p>}
+      {<p className="text-sm font-light">You have {title.split(' ')[0]} {(results?.jobs?.length + (( results?.totalPages > 1 && results?.totalPages -1 * 8 ))) || 0 } jobs</p>}
 
       <div className="jobCardContainer grid items-center grid-cols-1 md:grid-cols-2 max-lg:grid-cols-1 gap-6 my-4">
         <Suspense
@@ -61,7 +61,7 @@ const JobPage = ({query, title}) => {
             })}
         </Suspense>
       </div>
-      {results?.totalPages > 0 && <Pagination totalPages={results?.totalPages} />}
+      {results?.totalPages > 0 && <Pagination totalPages={results?.totalPages} setPage={setPage}/>}
     </motion.div>
   );
 };

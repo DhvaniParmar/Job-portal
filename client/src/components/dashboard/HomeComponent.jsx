@@ -11,12 +11,12 @@ import { PacmanLoader } from "react-spinners";
 
 const HomeComponent = () => {
   const [searchParams] = useSearchParams();
-  const page = parseInt(searchParams.get("page")) || 1;
+  const [ page, setPage ] = useState(parseInt(searchParams.get("page")) || 1);
   const token = localStorage.getItem("token");
   if (!token) return null;
   const user = jwtDecode(token);
   const [jobs, setJobs] = useState([]);
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
   const dispatch = useDispatch()
 
@@ -31,7 +31,7 @@ const HomeComponent = () => {
         const data = await res.json();
         if (data.success) {
           setJobs(data.jobs);
-          setTotalPages(data.totalPages);
+          setTotalPages(val => val = data.totalPages);
         }
         dispatch(setProgress(100));
       };
@@ -39,7 +39,7 @@ const HomeComponent = () => {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [page]);
 
   return (
     <motion.div
@@ -83,8 +83,7 @@ const HomeComponent = () => {
         </div>
       </div>
 
-      <Pagination totalPages={totalPages
-      }/>
+      <Pagination totalPages={totalPages} setPage={setPage}/>
     </motion.div>
   );
 };

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { PacmanLoader } from "react-spinners";
 import { baseUrl } from "@/utils";
 import { useSelector } from "react-redux";
+import { formatDate } from "@/utils/services";
 
 const UserProfile = ({ user }) => {
   const [company, setCompany] = React.useState(null);
@@ -14,20 +15,23 @@ const UserProfile = ({ user }) => {
 
   const ID = user._id || user.id
   let isSelfProfile = false
+  console.log(user.resume)
 
   isSelfProfile = userData?.id === ID
 
   useEffect(() => {
-    const fetchCompany = async () => {
-      try {
-        const res = await fetch(`${baseUrl}company/${user.company}`);
-        const data = await res.json();
-        if (data.success) setCompany(data.company);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    fetchCompany();
+    if(user.role === 'Employer') {
+      const fetchCompany = async () => {
+        try {
+          const res = await fetch(`${baseUrl}company/${user.company}`);
+          const data = await res.json();
+          if (data.success) setCompany(data.company);
+        } catch (error) {
+          console.log(error.message);
+        }
+      };
+      fetchCompany();
+    }
   }, []);
   return (
     <Suspense
@@ -99,7 +103,7 @@ const UserProfile = ({ user }) => {
           </div>
         </div>
 
-        <p className="text-xs italic">Joined on: {user.createdAt}</p>
+        <p className="text-xs italic">Joined on: {user.createdAt && formatDate(user.createdAt)}</p>
 
         {user.role === 'Applicant' ? <p>Applied for {user?.appliedJobs?.length || 0} jobs</p> : <p>Posted {user?.postedJobs?.length || 0} jobs.</p>}
 
@@ -108,7 +112,7 @@ const UserProfile = ({ user }) => {
           <p>{user.bio ? user.bio : "No Bio added."}</p>
         </div>
 
-        {user.role === "Apllicant" && (
+        {user.role === "Applicant" && (
           <div className="resume w-full flex flex-col ">
             <p className="profile-link">Resume</p>
             {user.resume ? (
@@ -117,7 +121,8 @@ const UserProfile = ({ user }) => {
                 target="_blank"
                 className="hover-effect"
               >
-                View Resume
+                <iframe src={user.resume.url} width="100%" height="600px" type="application/pdf" ></iframe>
+
               </Link>
             ) : (
               <p>No resume added.</p>

@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation, useSearchParams, useNavigate } from "react-router-dom";
 import Query from 'query-string'
 
-const Pagination = ({ totalPages = 10 }) => {
+const Pagination = ({ totalPages = 10, setPage= ()=>{} }) => {
   const location = useLocation();
   const query = Query.parse(location.search);
 
@@ -13,6 +13,7 @@ const Pagination = ({ totalPages = 10 }) => {
   const handleNavigation = (direction) => {
     const newPage = direction === "prev" ? page - 1 : page + 1;
     query.page = newPage;
+    setPage(newPage);
     navigate({ path : `${location.pathname}`, search : Query.stringify(query)});
   }
 

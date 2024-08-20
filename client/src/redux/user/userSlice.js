@@ -21,39 +21,39 @@ export const userSlice = createSlice({
     company: userData?.company || '',
   },
   reducers: {
-    updateUser: (state, action) => {
-      state.id = action.payload?._id
-      state.name = action.payload?.name
-      state.email = action.payload?.email
-      state.phone = action.payload?.phone
-      state.niches = action.payload?.niches
-      state.profilePhoto = action.payload?.profilePhoto
-      state.resume = action.payload?.resume
-      state.role = action.payload?.role
-      state.skills = action.payload?.skills
-      state.bio = action.payload?.bio
-      state.savedJobs = action.payload?.savedJobs
-      state.appliedJobs = action.payload?.appliedJobs
-      state.postedJobs = action.payload?.postedJobs
-      state.company = action.payload?.company
-    },
-    logout: (state) => {
-      state.id = ''
-      state.name = ''
-      state.email = ''
-      state.phone = ''
-      state.niches = []
-      state.profilePhoto = ''
-      state.resume = ''
-      state.role = ''
-      state.skills = []
-      state.bio = ''
-      state.savedJobs = []
-      state.appliedJobs = []
-      state.postedJobs = []
-      state.company = ''
-    },
-}
+      updateUser: (state, action) => {
+          state.id = action.payload?._id;
+          state.name = action.payload?.name;
+          state.email = action.payload?.email;
+          state.phone = action.payload?.phone;
+          state.niches = action.payload?.niches;
+          state.profilePhoto = action.payload?.profilePhoto;
+          state.resume = action.payload?.resume;
+          state.role = action.payload?.role;
+          state.skills = action.payload?.skills;
+          state.bio = action.payload?.bio;
+          state.savedJobs = action.payload?.savedJobs;
+          state.appliedJobs = action.payload?.appliedJobs;
+          state.postedJobs = action.payload?.postedJobs;
+          state.company = action.payload?.company;
+      },
+      logout: (state) => {
+          state.id = '';
+          state.name = '';
+          state.email = '';
+          state.phone = '';
+          state.niches = [];
+          state.profilePhoto = '';
+          state.resume = '';
+          state.role = '';
+          state.skills = [];
+          state.bio = '';
+          state.savedJobs = [];
+          state.appliedJobs = [];
+          state.postedJobs = [];
+          state.company = '';
+      }
+  }
 })
 
 export const { updateUser, logout } = userSlice.actions

@@ -69,7 +69,7 @@ export const register = async (req, res, next) => {
             );
           }
           userData.profilePhoto = {
-            public_id: cloudinaryResponse.public_id, // we are storing the resume in the userdata list.
+            public_id: cloudinaryResponse.public_id, // we are storing the profile photo in the userdata list.
             url: cloudinaryResponse.secure_url,
           };
         } catch (error) {
