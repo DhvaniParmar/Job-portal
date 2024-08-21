@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { jobTitles } from "@/utils";
 
-const Searchbar = () => {
+const Searchbar = ({setRefetch = ()=>{}}) => {
   const theme = useSelector((state) => state.theme.value);
   const navigate = useNavigate();
 
@@ -105,10 +105,14 @@ const Searchbar = () => {
           </div>
         </div>
         <button
-          disabled={jobTitle.length < 2 || location.length < 2}
+          disabled={jobTitle.length < 2 && location.length < 2}
           onClick={() => {
-            navigate(
-              `/dashboard/search?jobTitle=${jobTitle}&location=${location}`
+            setRefetch((prev) => !prev);
+            const params = new URLSearchParams();
+            if (jobTitle) params.append("jobTitle", jobTitle);
+            if (location) params.append("location", location);
+            return navigate(
+              `/dashboard/search?${params.toString()}`,
             );
           }}
           className="p-2 rounded-full bg-gray-500/60 disabled:cursor-not-allowed"

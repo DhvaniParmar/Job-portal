@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Popover,
@@ -12,8 +12,11 @@ import { jwtDecode } from "jwt-decode";
 import { getInitials } from "@/utils/services";
 import { setProgress } from "@/redux/progress/progressSlice";
 import { PopoverClose } from "@radix-ui/react-popover";
+import { baseUrl } from "@/utils";
+import { logout } from "@/redux/user/userSlice";
 
 const UserAvatar = () => {
+  const profilePhoto = useSelector((state) => state.user.profilePhoto);
   const theme = useSelector((state) => state.theme.value);
   const token = localStorage.getItem("token");
   if (!token) return null;
@@ -24,11 +27,10 @@ const UserAvatar = () => {
   const handleLogout = async() => {
     try{
       dispatch(setProgress(30));
-      await fetch(`http://localhost:4000/api/v1/user/logout`,{
-        method: "GET",
-      })
       dispatch(setProgress(70));
       localStorage.removeItem("token");
+      localStorage.removeItem("userData");
+      dispatch(logout());
       dispatch(setProgress(100));
       navigate('/')
     }catch(error){
@@ -36,11 +38,15 @@ const UserAvatar = () => {
     }
   }
 
+  useEffect(()=>{
+    dispatch(setProgress(100))
+  },[])
+
   return (
     <Popover sideOffset={5}>
       <PopoverTrigger>
-        <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
+        <Avatar className={`${theme === 'dark' && 'text-black'} hover:shadow-[0_0_25px_gray]`}>
+          <AvatarImage src={profilePhoto?.url ? profilePhoto.url : null} />
           <AvatarFallback>{getInitials(user?.name)}</AvatarFallback>
         </Avatar>
       </PopoverTrigger>

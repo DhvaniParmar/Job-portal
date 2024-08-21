@@ -63,6 +63,7 @@ const upperMarquee = [
     "Attorney",
     "Auditor",
     "Author",
+    "Backend Developer",
     "Baker",
     "Bank Teller",
     "Barber",
@@ -112,6 +113,8 @@ const upperMarquee = [
     "Firefighter",
     "Fitness Trainer",
     "Florist",
+    "Frontend Developer",
+    "Full Stack Developer",
     "Graphic Designer",
     "Hairdresser",
     "Healthcare Administrator",
@@ -211,24 +214,6 @@ const upperMarquee = [
       company : 'Apple',
       logo : 'company-logo/apple.png',
     },
-    // {
-    //   title : 'Marketing Specialist',
-    //   description : 'A marketing specialist is a professional who manages marketing campaigns and promotions to increase sales and improve brand awareness. They are responsible for developing and executing marketing strategies.',
-    //   salary : '$80,000 - $110,000',
-    //   location : 'Austin, TX',
-    //   tags : ['Marketing', 'Specialist', 'Manager'],
-    //   company : 'Microsoft',
-    //   logo : 'company-logo/microsoft.png',
-    // },
-    // {
-    //   title : 'Financial Analyst',
-    //   description : 'A financial analyst is a professional who analyzes financial data to help companies make business decisions. They evaluate investment opportunities, prepare reports, and develop financial models.',
-    //   salary : '$70,000 - $100,000',
-    //   location : 'Chicago, IL',
-    //   tags : ['Financial', 'Analyst', 'Accountant'],
-    //   company : 'Tesla',
-    //   logo : 'company-logo/tesla.png',
-    // },
   ]
 
 
@@ -275,4 +260,8 @@ const upperMarquee = [
     },
   ]
 
-  export { upperMarquee, lowerMarquee, tags, carouselImages, jobTitles, jobs, testimonials, links };
+  // const baseUrl = "http://localhost:4000/api/v1/";
+  const baseUrl = "https://jobster-backend-sc7n.onrender.com/api/v1/";
+
+
+  export { baseUrl, upperMarquee, lowerMarquee, tags, carouselImages, jobTitles, jobs, testimonials, links };

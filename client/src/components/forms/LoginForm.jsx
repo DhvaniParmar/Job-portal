@@ -14,24 +14,12 @@ import {
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { setProgress } from "@/redux/progress/progressSlice";
+import { baseUrl } from "@/utils";
+import { updateUser } from "@/redux/user/userSlice";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address."),
-  password: z
-    .string()
-    .min(8, {
-      message: "Password must be at least 8 characters long.",
-    })
-    .refine(
-      (value) =>
-        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+}{":;'?/>.<,]).{8,}$/.test(
-          value
-        ),
-      {
-        message:
-          "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character.",
-      }
-    ),
+  password: z.string(),
 });
 
 const LoginForm = () => {
@@ -60,7 +48,7 @@ const LoginForm = () => {
   const handleLogin = async (values) => {
     try {
       dispatch(setProgress(30));
-      const res = await fetch(`http://localhost:4000/api/v1/user/login`, {
+      const res = await fetch(`${baseUrl}user/login`, {
         body: JSON.stringify({
           ...values,
           role: role.charAt(0).toUpperCase() + role.slice(1),
@@ -73,7 +61,9 @@ const LoginForm = () => {
       dispatch(setProgress(60));
       const data = await res.json();
       if (data.success) {
-        localStorage.setItem("token", data.token)
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("userData", JSON.stringify(data.user));
+        dispatch(updateUser(data.user));
         dispatch(setProgress(100));
         navigate("/dashboard");
       } else {
@@ -108,7 +98,7 @@ const LoginForm = () => {
     >
       <h1 className="text-2xl pt-4 font-bold">Welcome to Jobster</h1>
       <p className="font-light py-1">
-        Enter your details and help us in connecting you to your dream job.
+        Enter your credentials and explore the limitless opportunities.
       </p>
 
       <Form {...form}>

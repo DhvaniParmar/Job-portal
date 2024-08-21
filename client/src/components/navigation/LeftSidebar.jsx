@@ -10,7 +10,7 @@ const LeftSidebar = () => {
     <div className={`py-12 px-12 h-full max-sm:hidden flex flex-col justify-start border-r fixed top-12 left-0`}>
         <div className="flex flex-col gap-4 flex-1 ">
           {links.map((link, index) => {
-            const isActive = location.pathname == link.url;
+            const isActive = location.pathname == link.url || ( location.pathname.includes(link.url) && link.url !== '/dashboard');
             return (
               <Link
                 to={link.url}

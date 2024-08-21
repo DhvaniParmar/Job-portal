@@ -17,8 +17,13 @@ const removeHover =() =>{
 }
 
 const getInitials = (name) => {
-    let initials = name.split(' ').map((n)=>n[0]).join('')
-    return initials
+    let initials = name.split(' ').map((n) => n[0]).join('');
+    return initials.toUpperCase();
 }
 
-export { animateHover, removeHover, getInitials }
+const formatDate = (date) => {
+    const options = { day: 'numeric', month: 'short', year: 'numeric' };
+    return new Date(date).toLocaleDateString('en-US', options);
+}
+
+export { animateHover, removeHover, getInitials, formatDate }

@@ -1,5 +1,11 @@
 import React, { useEffect } from "react";
-import { Link, Outlet, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { useSelector } from "react-redux";
 import Navbar from "../components/shared/Navbar";
 
@@ -12,7 +18,7 @@ const Auth = () => {
   const redirect = searchParams.get("redirect");
 
   const token = localStorage.getItem("token") || null;
-  
+
   useEffect(() => {
     if (token) navigate("/dashboard");
   }, []);
@@ -20,10 +26,12 @@ const Auth = () => {
   return (
     <div
       className={` ${
-        theme === "dark" ? "bg-zinc-900 text-white" : 'bg-gradient-to-r from-transparent to-zinc-900/30'
+        theme === "dark"
+          ? "bg-zinc-900 text-white"
+          : "bg-gradient-to-r from-transparent to-zinc-900/30"
       } w-screen min-h-[100dvh] font-gupter flex flex-col`}
     >
-      <Navbar otherClasses={"relative"}>
+      <Navbar otherClasses={"fixed"}>
         {location.pathname === "/auth/register" ? (
           <Link to="/auth" className="auth-button">
             Log In
@@ -36,7 +44,7 @@ const Auth = () => {
       </Navbar>
       <div className="flex flex-col items-center justify-center flex-1 relative">
         {redirect && (
-          <div className="banner w-full px-2 py-2 absolute top-0 bg-gray-500/30 transition-all duration-300 font-light italic text-sm">
+          <div className="banner w-full px-2 py-2 absolute top-[9vh] bg-gray-500/30 transition-all duration-300 font-light italic text-sm">
             <p className="">You need to login first to perform this action.</p>
             <Link
               to="/auth"
@@ -46,7 +54,9 @@ const Auth = () => {
             </Link>
           </div>
         )}
-        <Outlet />
+        <div className="my-24 w-full flex justify-center">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

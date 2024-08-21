@@ -4,23 +4,22 @@ import { Link, useNavigate } from "react-router-dom";
 import MarqueeItem from "../components/cards/MarqueeItem";
 import Hero from "../components/Hero";
 import { lowerMarquee, upperMarquee } from "../utils";
-import { lazy } from "react";
 import { PacmanLoader } from "react-spinners";
+import Navbar from "@/components/shared/Navbar";
+import CallToAction from "@/components/CallToAction";
+import TrendingJobs from "@/components/TrendingJobs";
+import Testimonials from "@/components/Testimonials";
+import Footer from "@/components/shared/Footer";
 
-const Navbar = lazy(() => import("../components/shared/Navbar"));
-const TrendingJobs = lazy(() => import("../components/TrendingJobs"));
-const CallToAction = lazy(() => import("../components/CallToAction"));
-const Testimonials = lazy(() => import("../components/Testimonials"));
-const Footer = lazy(() => import("../components/shared/Footer"));
 
 const Home = () => {
   const theme = useSelector((state) => state.theme.value);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
 
-  const user = localStorage.getItem("user");
-  React.useEffect(()=>{
-    if(user) navigate('/dashboard')
-  },[])
+  React.useEffect(() => {
+    if (user.name) navigate("/dashboard");
+  }, []);
 
   return (
     <div
@@ -29,6 +28,7 @@ const Home = () => {
       }`}
     >
       {/* Navbar */}
+      <Suspense fallback={<div className="w-full h-[8vh] animate-pulse"></div>}>
       <Navbar>
         <div className="flex items-center justify-end gap-6 max-lg:gap-4">
           <Link
@@ -45,6 +45,7 @@ const Home = () => {
           </Link>
         </div>
       </Navbar>
+      </Suspense>
       <Suspense
         fallback={
           <div
@@ -54,7 +55,10 @@ const Home = () => {
                 : "bg-gradient-to-r from-transparent to-zinc-900/30"
             } absolute inset-0 flex items-center justify-center h-screen w-screen text-5xl font-bold drop-shadow-{0_0_20px_black]`}
           >
-            <PacmanLoader size={48} color={`${theme === 'dark' ? 'gray' : '#000'}`}/>
+            <PacmanLoader
+              size={48}
+              color={`${theme === "dark" ? "gray" : "#000"}`}
+            />
           </div>
         }
       >
@@ -67,19 +71,25 @@ const Home = () => {
           <CallToAction />
 
           {/* Hero Section */}
+          <Suspense fallback={<div className="w-screen h-[30vh]"><PacmanLoader/></div>}>
           <Hero />
+          </Suspense>
 
           {/* Marquee Section */}
-          <div
-            id="clients"
-            className="marquee flex flex-col py-6 items-center md:text-3xl max-lg:text-xs rounded-t-lg bg-slate-900/90 shadow-[0_0_20px_gray] shadow-gray-300/40 overflow-hidden whitespace-nowrap "
-          >
-            <MarqueeItem images={upperMarquee} from={0} to={"-100%"} />
-            <MarqueeItem images={lowerMarquee} from={"-100%"} to={0} />
-          </div>
+          <Suspense fallback={<div className="w-screen h-[30vh]"><PacmanLoader/></div>}>
+            <div
+              id="clients"
+              className="marquee flex flex-col py-6 items-center md:text-3xl max-lg:text-xs rounded-t-lg bg-slate-900/90 shadow-[0_0_20px_gray] shadow-gray-300/40 overflow-hidden whitespace-nowrap "
+            >
+              <MarqueeItem images={upperMarquee} from={0} to={"-100%"} />
+              <MarqueeItem images={lowerMarquee} from={"-100%"} to={0} />
+            </div>
+          </Suspense>
 
           {/* Trending Jobs Section */}
+          <Suspense fallback={<div className="w-screen h-[30vh]"><PacmanLoader/></div>}>
           <TrendingJobs />
+          </Suspense>
 
           {/* Testimonials */}
           <Testimonials />
