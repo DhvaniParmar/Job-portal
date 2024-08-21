@@ -9,12 +9,11 @@ import bcrypt from "bcrypt";
 
 export const register = async (req, res, next) => {
   try {
-    const { name, email, phone, password, role, niches } = req.body
-    
+    const { name, email, phone, password, role, niches } = req.body;
 
     if (!name || !email || !phone || !password || !role) {
       return next(
-        new ErrorHandler("All fields are required, write again." , 400)
+        new ErrorHandler("All fields are required, write again.", 400)
       );
     }
 
@@ -28,9 +27,9 @@ export const register = async (req, res, next) => {
       name,
       email,
       phone,
-      password : hashedPassword,
+      password: hashedPassword,
       role,
-      niches : niches.length > 0 ? niches : [],
+      niches: niches.length > 0 ? niches : [],
     };
     if (req.files && req.files?.resume) {
       const { resume } = req.files;
@@ -109,7 +108,6 @@ export const login = catchAsyncErrors(async (req, res, next) => {
   sendToken(user, 200, res, "User logged in successfully.");
 });
 
-
 //now we create function that user can get their own details
 
 export const getUser = catchAsyncErrors(async (req, res) => {
@@ -178,6 +176,77 @@ export const updateProfile = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+export const editProfile = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const userInDb = await User.findOne({ email: req.body.email });
+    if (!userInDb) {
+      return next(new ErrorHandler("User not found", 404));
+    }
+    const { name, email, phone, niches, bio } = req.body;
+
+    const userData = {
+      name,
+      email,
+      phone,
+      bio,
+      niches: niches?.length > 0 ? niches : [],
+    };
+    if (req.files && req.files?.resume) {
+      const { resume } = req.files;
+      if (resume) {
+        try {
+          const cloudinaryResponse = await cloudinary.uploader.upload(
+            resume.tempFilePath,
+            { folder: "Job_Seekers_Resume" }
+          );
+          if (!cloudinaryResponse || cloudinaryResponse.error) {
+            return next(
+              new ErrorHandler("Failed to upload resume to cloud.", 500)
+            );
+          }
+          userData.resume = {
+            public_id: cloudinaryResponse.public_id, // we are storing the resume in the userdata list.
+            url: cloudinaryResponse.secure_url,
+          };
+        } catch (error) {
+          return next(new ErrorHandler("Failed to upload resume", 500));
+        }
+      }
+    }
+
+    if (req.files && req.files?.profilePhoto) {
+      const { profilePhoto } = req.files;
+      if (profilePhoto) {
+        try {
+          const cloudinaryResponse = await cloudinary.uploader.upload(
+            profilePhoto.tempFilePath,
+            { folder: "Job_Seekers_Profile" }
+          );
+          if (!cloudinaryResponse || cloudinaryResponse.error) {
+            return next(
+              new ErrorHandler("Failed to upload profile photo to cloud.", 500)
+            );
+          }
+          userData.profilePhoto = {
+            public_id: cloudinaryResponse.public_id, // we are storing the profile photo in the userdata list.
+            url: cloudinaryResponse.secure_url,
+          };
+        } catch (error) {
+          return next(new ErrorHandler("Failed to upload profilePhoto", 500));
+        }
+      }
+    }
+
+    const user = await User.findOneAndUpdate({ email }, userData);
+    res.status(200).json({
+      success: true,
+      user,
+      message: "Profile updated.",
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
 
 //updating the password - user profile
 // If existing password matches of the user - comparePassword method

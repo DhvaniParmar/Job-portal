@@ -89,7 +89,7 @@ const Company = () => {
 
             <div className="w-full flex flex-col">
               <p className="profile-link">Description</p>
-              <p className="text-md">{company.description || 'Nothing to sbhow'}</p>
+              <p className="text-md overflow-hidden">{company.description || 'Nothing to sbhow'}</p>
             </div>
 
             <div className="admin-details flex flex-col py-4 bg-blue-600/10 rounded-md">

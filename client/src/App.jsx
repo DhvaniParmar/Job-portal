@@ -27,6 +27,7 @@ import UserById from "./pages/UserById";
 import JobEdit from "./pages/JobEdit";
 import JobApplication from "./pages/JobApplication";
 import Applications from "./pages/Applications";
+import EditProfilePage from "./pages/EditProfilePage";
 
 const App = () => {
   const progress = useSelector((state) => state.progress.value);
@@ -58,7 +59,10 @@ const App = () => {
               <Route path="postedJobs" element={<PostedJobs />} />
               <Route path="appliedJobs" element={<AppliedJobs />} />
             </Route>
-            <Route path="profile" element={<Profile />} />
+            <Route path="profile" element={<Outlet />} >
+              <Route path="" element={<Profile />} />
+              <Route path="edit" element={<EditProfilePage />} />
+            </Route>
             <Route path="search" element={<Search />} />
             <Route path="post-job" element={<JobForm />} />
             <Route path="add-company" element={<CompanyForm />} />

@@ -15,7 +15,6 @@ const UserProfile = ({ user }) => {
 
   const ID = user._id || user.id
   let isSelfProfile = false
-  console.log(user.resume)
 
   isSelfProfile = userData?.id === ID
 
@@ -121,7 +120,7 @@ const UserProfile = ({ user }) => {
                 target="_blank"
                 className="hover-effect relative"
               >
-                <iframe src={user.resume.url} width="100%" height="600px" type="application/pdf" ></iframe>
+                <embed src={user.resume.url} width="100%" height="700vh" type="application/pdf" ></embed>
 
               </Link>
             ) : (
@@ -145,11 +144,11 @@ const UserProfile = ({ user }) => {
                       alt={company.name}
                       className="w-12 h-12 rounded-full object-cover border-2 hover:shadow-[0_0_25px_gray]"
                     />
-                    <div className="text-xl font-bold hover-effect relative w-fit mb-2 pr-8 pb-2 before:h-[1px]">
+                    <div className="text-xl text-wrap font-bold hover-effect relative w-fit mb-2 pr-8 pb-2 before:h-[1px]">
                       {company.name}
                     </div>
                   </Link>
-                  <p>{company.description}</p>
+                  <p className="flex flex-wrap max-w-full text-wrap">{company.description}</p>
                 </>
               ) : (
                 "No company added."
