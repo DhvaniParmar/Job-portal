@@ -26,4 +26,11 @@ const formatDate = (date) => {
     return new Date(date).toLocaleDateString('en-US', options);
 }
 
-export { animateHover, removeHover, getInitials, formatDate }
+const hasImageChanged = (profilePhoto, userPhoto) => {
+    if (profilePhoto && profilePhoto.url !== userPhoto) {
+        return true;
+    }
+    return false;
+}
+
+export { animateHover, removeHover, getInitials, formatDate, hasImageChanged }

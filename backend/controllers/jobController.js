@@ -228,7 +228,7 @@ export const fetchSmallCards = catchAsyncErrors(async (req, res) => {
     .select("title salary location company")
     .limit(4)
     .populate("company", "name logo location");
-  const companies = await Company.find().select("name logo location").limit(4);
+  const companies = await Company.find().select("name logo location").limit(3);
   res.status(200).json({
     success: true,
     jobs,
