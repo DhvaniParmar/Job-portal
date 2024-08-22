@@ -121,7 +121,9 @@ const UserProfile = ({ user }) => {
                 target="_blank"
                 className="hover-effect relative"
               >
-                <iframe src={user.resume.url} width="100%" height="600px" type="application/pdf" ></iframe>
+                {/* <iframe src={user.resume.url} width="100%" height="600px" type="application/pdf" ></iframe> */}
+                <embed src={user.resume.url} width="100%" height="600px" type="application/pdf" />
+
 
               </Link>
             ) : (

@@ -260,8 +260,8 @@ const upperMarquee = [
     },
   ]
 
-  // const baseUrl = "http://localhost:4000/api/v1/";
-  const baseUrl = "https://jobster-backend-sc7n.onrender.com/api/v1/";
+  const baseUrl = "http://localhost:4000/api/v1/";
+  // const baseUrl = "https://jobster-backend-sc7n.onrender.com/api/v1/";
 
 
   export { baseUrl, upperMarquee, lowerMarquee, tags, carouselImages, jobTitles, jobs, testimonials, links };

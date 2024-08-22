@@ -13,7 +13,7 @@ const Footer = () => {
         <div className="info flex flex-col gap-2 max-lg:border-b border-slate-900 max-lg:mb-2 max-lg:pb-2">
           <p className="text-2xl font-bold">Jobster</p>
           <p className="text-sm ">
-            663/2 , 6<sup>th</sup> Roveland Avenue, Queens Mary USA 221002
+           Adress: India, 221002
           </p>
           <a href="/" className="text-sm">
             +91 1234567890
@@ -43,7 +43,7 @@ const Footer = () => {
           </a>
         </div>
       </div>
-      <p className="text-xs py-2">©, 2000 Pvt. Ltd. All Rights Reserved.</p>
+      <p className="text-xs py-2">©, 2024 Pvt. Ltd. All Rights Reserved.</p>
     </footer>
   );
 };
