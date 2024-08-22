@@ -13,7 +13,7 @@ const Footer = () => {
         <div className="info flex flex-col gap-2 max-lg:border-b border-slate-900 max-lg:mb-2 max-lg:pb-2">
           <p className="text-2xl font-bold">Jobster</p>
           <p className="text-sm ">
-           Adress: India, 221002
+           Address: India, 221002
           </p>
           <a href="/" className="text-sm">
             +91 1234567890
